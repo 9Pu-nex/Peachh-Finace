@@ -20,7 +20,6 @@
 .th-yellow {--t50:#fffbea;--t100:#ffeea0;--t400:#f5c518;--t600:#c89000;--t800:#886000;--bg:#f5f0e0;--border:#ecdcb0;}
 .th-sky    {--t50:#eafaff;--t100:#b8edfc;--t400:#22c4f0;--t600:#0898c4;--t800:#046688;--bg:#e2f2f8;--border:#c0e4f0;}
 .th-slate  {--t50:#f0f2f5;--t100:#cdd4e0;--t400:#6680a0;--t600:#445870;--t800:#283848;--bg:#e8ecf2;--border:#d0d8e4;}
-.th-pink   {--t50:#fef0f5;--t100:#fbd0e0;--t400:#f4a7c0;--t600:#d4607e;--t800:#8c2848;--bg:#faeaef;--border:#f5c8d8;}
 .th-red    {--t50:#fff0f0;--t100:#ffc8c8;--t400:#e84040;--t600:#b82020;--t800:#780a0a;--bg:#f5e8e8;--border:#eecece;}
 
 /* ===== BASE ===== */
@@ -40,7 +39,17 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--tp);min-h
 
 /* theme switcher — scrollable pill row */
 .theme-switcher{display:flex;gap:8px;align-items:center;}
-
+.tb{width:26px;height:26px;border-radius:50%;border:2.5px solid transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;flex-shrink:0;}
+.tb.active{border-color:#fff;transform:scale(1.15);}
+.tb-mint  {background:linear-gradient(135deg,#26c487,#0f8c5e);}
+.tb-blue  {background:linear-gradient(135deg,#378add,#185fa5);}
+.tb-orange{background:linear-gradient(135deg,#f07820,#b84f00);}
+.tb-rose  {background:linear-gradient(135deg,#e8547a,#b83058);}
+.tb-purple{background:linear-gradient(135deg,#7c5cef,#5234c8);}
+.tb-yellow{background:linear-gradient(135deg,#f5c518,#c89000);}
+.tb-sky   {background:linear-gradient(135deg,#22c4f0,#0898c4);}
+.tb-slate {background:linear-gradient(135deg,#6680a0,#445870);}
+.tb-red   {background:linear-gradient(135deg,#e84040,#b82020);}
 
 /* ===== PAGE SCROLL ===== */
 .page-scroll{padding:0 14px 120px;display:flex;flex-direction:column;gap:12px;margin-top:14px;}
@@ -167,41 +176,6 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--tp);min-h
 .cfg-sub{font-size:14px;color:var(--ts);margin-bottom:20px;line-height:1.5;}
 .cfg-link{color:var(--t600);text-decoration:underline;}
 .cfg-warn{background:#fff8e1;border:1.5px solid #f5c518;border-radius:12px;padding:12px 14px;font-size:13px;color:#7a5800;margin-bottom:18px;line-height:1.5;}
-
-/* PALETTE BUTTON */
-.palette-btn{
-  background:rgba(255,255,255,.22);backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,.45);border-radius:50%;
-  width:38px;height:38px;font-size:18px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  -webkit-tap-highlight-color:transparent;flex-shrink:0;
-}
-.palette-btn:active{background:rgba(255,255,255,.42);}
-
-/* PALETTE POPUP */
-.palette-popup{
-  display:none;position:fixed;z-index:500;
-  background:var(--surface);border-radius:20px;
-  box-shadow:0 8px 32px rgba(0,0,0,.18);
-  padding:16px;width:280px;
-  animation:popIn .18s cubic-bezier(.34,1.3,.64,1);
-}
-.palette-popup.open{display:block;}
-.pp-title{font-family:'Kanit',sans-serif;font-size:14px;font-weight:700;
-  color:var(--tp);margin-bottom:12px;opacity:.6;letter-spacing:.5px;}
-.pp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-.pp-item{
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-  padding:10px 6px;border-radius:14px;border:2px solid transparent;
-  cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .15s;
-}
-.pp-item:active{transform:scale(.94);}
-.pp-item.active{border-color:var(--tp);background:var(--t50);}
-.pp-swatch{width:36px;height:36px;border-radius:50%;flex-shrink:0;}
-.pp-label{font-size:12px;font-weight:600;color:var(--ts);text-align:center;}
-/* overlay to close on outside click */
-.palette-overlay{display:none;position:fixed;inset:0;z-index:499;}
-.palette-overlay.open{display:block;}
 </style>
 </head>
 <body>
@@ -212,7 +186,17 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--tp);min-h
   <div class="cover-overlay"></div>
   <div class="cover-topbar">
     <span class="app-title" style="color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.4);">🌿 Pu-ne's</span>
-    <button class="palette-btn" id="paletteBtn" onclick="togglePalette(event)" title="เปลี่ยนธีมสี">🎨</button>
+    <div class="theme-switcher">
+      <button class="tb tb-mint active" onclick="setTheme('mint')" title="มิ้นท์"></button>
+      <button class="tb tb-blue" onclick="setTheme('blue')" title="ฟ้า"></button>
+      <button class="tb tb-orange" onclick="setTheme('orange')" title="ส้ม"></button>
+      <button class="tb tb-rose" onclick="setTheme('rose')" title="ชมพู"></button>
+      <button class="tb tb-purple" onclick="setTheme('purple')" title="ม่วง"></button>
+      <button class="tb tb-yellow" onclick="setTheme('yellow')" title="เหลือง"></button>
+      <button class="tb tb-sky" onclick="setTheme('sky')" title="ฟ้าใส"></button>
+      <button class="tb tb-slate" onclick="setTheme('slate')" title="เทา"></button>
+      <button class="tb tb-red" onclick="setTheme('red')" title="แดง"></button>
+    </div>
   </div>
   <div class="cover-info">
     <div class="cover-year">ปี 2569</div>
@@ -418,9 +402,7 @@ const BASE = 'https://sheets.googleapis.com/v4/spreadsheets';
 async function sheetGet(range){
   const {apiKey,sheetId}=getCfg();
   const enc=encodeURIComponent(range);
-  const r=await fetch(`${BASE}/${sheetId}/values/${enc}?key=${apiKey}`,{
-    headers:{'Referer':location.href,'X-Referer':location.href}
-  });
+  const r=await fetch(`${BASE}/${sheetId}/values/${enc}?key=${apiKey}`);
   if(!r.ok) throw new Error(`Sheets API error ${r.status}: ${await r.text()}`);
   const d=await r.json();
   return d.values||[];
@@ -431,7 +413,7 @@ async function sheetAppend(sheetName, rowValues){
   const range=encodeURIComponent(sheetName+'!A:E');
   const r=await fetch(
     `${BASE}/${sheetId}/values/${range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS&key=${apiKey}`,
-    {method:'POST',headers:{'Content-Type':'application/json','Referer':location.href},
+    {method:'POST',headers:{'Content-Type':'application/json'},
      body:JSON.stringify({values:[rowValues]})}
   );
   if(!r.ok) throw new Error(`Append error ${r.status}: ${await r.text()}`);
@@ -444,7 +426,7 @@ async function sheetUpdate(sheetName, rowIndex, colStart, colEnd, rowValues){
   const range=encodeURIComponent(`${sheetName}!${col1}${rowIndex}:${col2}${rowIndex}`);
   const r=await fetch(
     `${BASE}/${sheetId}/values/${range}?valueInputOption=USER_ENTERED&key=${apiKey}`,
-    {method:'PUT',headers:{'Content-Type':'application/json','Referer':location.href},
+    {method:'PUT',headers:{'Content-Type':'application/json'},
      body:JSON.stringify({values:[rowValues]})}
   );
   if(!r.ok) throw new Error(`Update error ${r.status}: ${await r.text()}`);
@@ -457,7 +439,7 @@ async function sheetClear(sheetName, rowIndex, colStart, colEnd){
   const range=encodeURIComponent(`${sheetName}!${col1}${rowIndex}:${col2}${rowIndex}`);
   const r=await fetch(
     `${BASE}/${sheetId}/values/${range}:clear?key=${apiKey}`,
-    {method:'POST',headers:{'Content-Type':'application/json','Referer':location.href}}
+    {method:'POST',headers:{'Content-Type':'application/json'}}
   );
   if(!r.ok) throw new Error(`Clear error ${r.status}: ${await r.text()}`);
 }
@@ -537,7 +519,7 @@ async function addTransactionAPI(month, wallet, dateStr, amount, comment, isInco
     const range=encodeURIComponent(`${sheetName}!G${nextRow}:J${nextRow}`);
     const r=await fetch(
       `${BASE}/${sheetId}/values/${range}?valueInputOption=USER_ENTERED&key=${apiKey}`,
-      {method:'PUT',headers:{'Content-Type':'application/json','Referer':location.href},
+      {method:'PUT',headers:{'Content-Type':'application/json'},
        body:JSON.stringify({values:[[dateStr, isIncome?amount:-amount, newBal, comment]]})}
     );
     if(!r.ok) throw new Error(`Write pocket error ${r.status}`);
@@ -586,64 +568,14 @@ const MTH_S=['','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','�
 let curMonth=new Date().getMonth()+1, curWallet='main', curView='cal';
 let wallet1=[], wallet2=[], editRow=null, txType='expense', modalWallet='main', coverPos='center';
 
-const THEMES = [
-  {id:'mint',    label:'มิ้นท์',      cls:'',          grad:'linear-gradient(135deg,#26c487,#0f8c5e)'},
-  {id:'pink',    label:'ชมพูพาสเทล',  cls:'th-pink',   grad:'linear-gradient(135deg,#f4a7c0,#d4607e)'},
-  {id:'blue',    label:'ฟ้า',         cls:'th-blue',   grad:'linear-gradient(135deg,#378add,#185fa5)'},
-  {id:'orange',  label:'ส้ม',         cls:'th-orange', grad:'linear-gradient(135deg,#f07820,#b84f00)'},
-  {id:'rose',    label:'กุหลาบ',      cls:'th-rose',   grad:'linear-gradient(135deg,#e8547a,#b83058)'},
-  {id:'purple',  label:'ม่วง',        cls:'th-purple', grad:'linear-gradient(135deg,#7c5cef,#5234c8)'},
-  {id:'yellow',  label:'เหลือง',      cls:'th-yellow', grad:'linear-gradient(135deg,#f5c518,#c89000)'},
-  {id:'sky',     label:'ฟ้าใส',       cls:'th-sky',    grad:'linear-gradient(135deg,#22c4f0,#0898c4)'},
-  {id:'slate',   label:'เทา',         cls:'th-slate',  grad:'linear-gradient(135deg,#6680a0,#445870)'},
-];
-
-const THEME_CLASS = Object.fromEntries(THEMES.map(t=>[t.id, t.cls]));
-
-function buildPaletteGrid(){
-  const grid = document.getElementById('ppGrid');
-  if(!grid) return;
-  grid.innerHTML = THEMES.map(t=>`
-    <div class="pp-item" id="ppi-${t.id}" onclick="setTheme('${t.id}');closePalette();">
-      <div class="pp-swatch" style="background:${t.grad};box-shadow:0 2px 8px rgba(0,0,0,.18);"></div>
-      <div class="pp-label">${t.label}</div>
-    </div>
-  `).join('');
-}
-
+const THEME_CLASS={'mint':'','blue':'th-blue','orange':'th-orange','rose':'th-rose','purple':'th-purple','yellow':'th-yellow','sky':'th-sky','slate':'th-slate','red':'th-red'};
 function setTheme(t){
-  document.body.className = THEME_CLASS[t]||'';
-  document.querySelectorAll('.pp-item').forEach(b=>b.classList.remove('active'));
-  const el=document.getElementById('ppi-'+t);if(el)el.classList.add('active');
+  document.body.className=THEME_CLASS[t]||'';
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
+  const el=document.querySelector('.tb-'+t);if(el)el.classList.add('active');
   localStorage.setItem('pt',t);
 }
-
-function togglePalette(e){
-  e.stopPropagation();
-  const popup = document.getElementById('palettePopup');
-  const overlay = document.getElementById('paletteOverlay');
-  const btn = document.getElementById('paletteBtn');
-  const isOpen = popup.classList.contains('open');
-  if(isOpen){ closePalette(); return; }
-  // position popup near button
-  const r = btn.getBoundingClientRect();
-  const pw = 280;
-  let left = r.right - pw;
-  if(left < 8) left = 8;
-  const top = r.bottom + 8;
-  popup.style.left = left + 'px';
-  popup.style.top  = top  + 'px';
-  popup.classList.add('open');
-  overlay.classList.add('open');
-}
-function closePalette(){
-  document.getElementById('palettePopup').classList.remove('open');
-  document.getElementById('paletteOverlay').classList.remove('open');
-}
-
-const st=localStorage.getItem('pt')||'mint';
-buildPaletteGrid();
-setTheme(st);
+const st=localStorage.getItem('pt');if(st)setTheme(st);
 
 function pad(n){return String(n).padStart(2,'0');}
 function fmtB(n){
@@ -855,14 +787,5 @@ window.onload=()=>{
   }
 };
 </script>
-
-<!-- PALETTE OVERLAY (close on outside tap) -->
-<div class="palette-overlay" id="paletteOverlay" onclick="closePalette()"></div>
-
-<!-- PALETTE POPUP -->
-<div class="palette-popup" id="palettePopup">
-  <div class="pp-title">เลือกธีมสี</div>
-  <div class="pp-grid" id="ppGrid"></div>
-</div>
 </body>
 </html>
