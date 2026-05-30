@@ -388,6 +388,11 @@ const SHEET_NAMES = {
   9:'SEP 2026',10:'OCT 2026',11:'NOV 2026',12:'DEC 2026'
 };
 
+/* ชื่อ sheet ที่มีจริงใน spreadsheet ตอนนี้ */
+const EXISTING_SHEETS = new Set([
+  'JAN 2026','FEB 2026','MAR 2026','APR 2026','MAY 2026','JUNE 2026'
+]);
+
 function getCfg(){
   return {
     apiKey: localStorage.getItem('pn_apikey')||'',
@@ -657,8 +662,20 @@ function changeMonth(d){curMonth=((curMonth-1+d+12)%12)+1;loadMonth();}
 async function loadMonth(){
   document.getElementById('navLabel').textContent=MTH[curMonth]+' 2026';
   document.getElementById('coverMonthName').textContent=MTH[curMonth];
-  ['sBalance','sIncome','sExpense'].forEach(id=>document.getElementById(id).textContent='...');
+  ['sBalance','sIncome','sExpense'].forEach(id=>document.getElementById(id).textContent='—');
   setGridLoading();
+
+  const sheetName = SHEET_NAMES[curMonth];
+  if(!EXISTING_SHEETS.has(sheetName)){
+    wallet1=[]; wallet2=[];
+    document.getElementById('coverImg').style.display='none';
+    updateSummary();
+    renderCalendar();
+    renderList();
+    showNoSheet(sheetName);
+    return;
+  }
+
   try{
     const data=await getMonthData(curMonth);
     wallet1=data.wallet1; wallet2=data.wallet2;
@@ -670,6 +687,17 @@ async function loadMonth(){
     showToast('❌ '+e.message);
     console.error(e);
   }
+}
+
+function showNoSheet(name){
+  document.getElementById('calGrid').innerHTML=
+    '<div style="grid-column:span 7;text-align:center;padding:40px 10px;color:var(--ts);">' +
+    '<div style="font-size:40px;margin-bottom:12px;">📋</div>' +
+    '<div style="font-size:16px;font-weight:700;color:var(--tp);margin-bottom:6px;">ยังไม่มี Sheet เดือนนี้</div>' +
+    '<div style="font-size:14px;">สร้าง sheet ชื่อ <b>'+name+'</b><br>ใน Google Sheets แล้วรีโหลดครับ</div>' +
+    '</div>';
+  document.getElementById('listContent').innerHTML=
+    '<div style="text-align:center;padding:40px;color:var(--ts);font-size:15px;">ยังไม่มี Sheet เดือนนี้</div>';
 }
 function setGridLoading(){
   if(curView==='cal') document.getElementById('calGrid').innerHTML='<div class="loading" style="grid-column:span 7"><div class="sp"></div>กำลังโหลด...</div>';
