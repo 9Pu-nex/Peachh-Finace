@@ -359,20 +359,14 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--tp);min-h
 <div class="cfg-mo" id="cfgModal">
   <div class="cfg-box">
     <div class="cfg-title">⚙️ ตั้งค่าการเชื่อมต่อ</div>
-    <div class="cfg-sub">กรอก API Key และ Spreadsheet ID เพื่อเชื่อม Google Sheets</div>
+    <div class="cfg-sub">วาง URL ของ Google Apps Script Web App ที่ deploy ไว้</div>
     <div class="cfg-warn">
-      ⚠️ API Key จะถูกเก็บใน localStorage บนเครื่องคุณเท่านั้น<br>
+      🔒 URL จะถูกเก็บใน localStorage บนเครื่องคุณเท่านั้น<br>
       อย่า commit ค่านี้ขึ้น GitHub repository สาธารณะ
     </div>
     <div class="fg">
-      <label class="fl">Google Sheets API Key
-        <a class="cfg-link" href="https://console.cloud.google.com/apis/credentials" target="_blank"> (สร้างที่นี่)</a>
-      </label>
-      <input class="fi" id="cfgApiKey" placeholder="AIzaSy..." style="font-size:14px;">
-    </div>
-    <div class="fg">
-      <label class="fl">Spreadsheet ID</label>
-      <input class="fi" id="cfgSheetId" value="16MsjlIK4YJxNWj_CDr9ta3Wm4bzbaDBi5Izrzs3t6Z8" style="font-size:14px;">
+      <label class="fl">Apps Script Web App URL</label>
+      <input class="fi" id="cfgScriptUrl" placeholder="https://script.google.com/macros/s/.../exec" style="font-size:13px;">
     </div>
     <button class="bprimary" onclick="saveConfig()">บันทึกและเริ่มใช้งาน</button>
   </div>
@@ -395,191 +389,55 @@ const EXISTING_SHEETS = new Set([
 
 function getCfg(){
   return {
-    apiKey: localStorage.getItem('pn_apikey')||'',
-    sheetId: localStorage.getItem('pn_sheetid')||'16MsjlIK4YJxNWj_CDr9ta3Wm4bzbaDBi5Izrzs3t6Z8'
+    scriptUrl: localStorage.getItem('pn_scripturl')||''
   };
 }
 function saveConfig(){
-  const k=document.getElementById('cfgApiKey').value.trim();
-  const s=document.getElementById('cfgSheetId').value.trim();
-  if(!k){showToast('ใส่ API Key ด้วยนะ');return;}
-  localStorage.setItem('pn_apikey',k);
-  localStorage.setItem('pn_sheetid',s);
+  const u=document.getElementById('cfgScriptUrl').value.trim();
+  if(!u){showToast('ใส่ Apps Script URL ด้วยนะ');return;}
+  localStorage.setItem('pn_scripturl',u);
   document.getElementById('cfgModal').classList.remove('open');
   loadMonth();
 }
 function openConfig(){
-  const c=getCfg();
-  document.getElementById('cfgApiKey').value=c.apiKey;
-  document.getElementById('cfgSheetId').value=c.sheetId;
+  document.getElementById('cfgScriptUrl').value=getCfg().scriptUrl;
   document.getElementById('cfgModal').classList.add('open');
 }
 
 /* =========================================================
-   GOOGLE SHEETS API v4 HELPERS
+   APPS SCRIPT API HELPER
    ========================================================= */
-const BASE = 'https://sheets.googleapis.com/v4/spreadsheets';
-
-async function sheetGet(range){
-  const {apiKey,sheetId}=getCfg();
-  const enc=encodeURIComponent(range);
-  const r=await fetch(`${BASE}/${sheetId}/values/${enc}?key=${apiKey}`,{
-    headers:{'Referer':location.href,'X-Referer':location.href}
+async function apiFetch(params){
+  const {scriptUrl}=getCfg();
+  if(!scriptUrl) throw new Error('ยังไม่ได้ตั้งค่า Apps Script URL');
+  const r=await fetch(scriptUrl,{
+    method:'POST',
+    headers:{'Content-Type':'text/plain'},
+    body:JSON.stringify(params)
   });
-  if(!r.ok) throw new Error(`Sheets API error ${r.status}: ${await r.text()}`);
+  if(!r.ok) throw new Error(`Server error ${r.status}`);
   const d=await r.json();
-  return d.values||[];
-}
-
-async function sheetAppend(sheetName, rowValues){
-  const {apiKey,sheetId}=getCfg();
-  const range=encodeURIComponent(sheetName+'!A:E');
-  const r=await fetch(
-    `${BASE}/${sheetId}/values/${range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS&key=${apiKey}`,
-    {method:'POST',headers:{'Content-Type':'application/json','Referer':location.href},
-     body:JSON.stringify({values:[rowValues]})}
-  );
-  if(!r.ok) throw new Error(`Append error ${r.status}: ${await r.text()}`);
-  return await r.json();
-}
-
-async function sheetUpdate(sheetName, rowIndex, colStart, colEnd, rowValues){
-  const {apiKey,sheetId}=getCfg();
-  const col1=String.fromCharCode(64+colStart), col2=String.fromCharCode(64+colEnd);
-  const range=encodeURIComponent(`${sheetName}!${col1}${rowIndex}:${col2}${rowIndex}`);
-  const r=await fetch(
-    `${BASE}/${sheetId}/values/${range}?valueInputOption=USER_ENTERED&key=${apiKey}`,
-    {method:'PUT',headers:{'Content-Type':'application/json','Referer':location.href},
-     body:JSON.stringify({values:[rowValues]})}
-  );
-  if(!r.ok) throw new Error(`Update error ${r.status}: ${await r.text()}`);
-  return await r.json();
-}
-
-async function sheetClear(sheetName, rowIndex, colStart, colEnd){
-  const {apiKey,sheetId}=getCfg();
-  const col1=String.fromCharCode(64+colStart), col2=String.fromCharCode(64+colEnd);
-  const range=encodeURIComponent(`${sheetName}!${col1}${rowIndex}:${col2}${rowIndex}`);
-  const r=await fetch(
-    `${BASE}/${sheetId}/values/${range}:clear?key=${apiKey}`,
-    {method:'POST',headers:{'Content-Type':'application/json','Referer':location.href}}
-  );
-  if(!r.ok) throw new Error(`Clear error ${r.status}: ${await r.text()}`);
+  if(d.error) throw new Error(d.error);
+  return d;
 }
 
 /* =========================================================
-   DATA PARSING
-   ========================================================= */
-function parseAmt(v){return parseFloat(String(v||'').replace(/[฿,\s]/g,''))||0;}
-function parseDateVal(v){
-  if(!v) return '';
-  // could be "28/5/26" or "28/05/2026" etc.
-  return String(v);
-}
-
-function readWalletFromRows(rows, dateCol, listCol, balCol, cmtCol, paidCol, walletLabel){
-  const out=[];
-  for(let i=1;i<rows.length;i++){
-    const row=rows[i]||[];
-    const dateVal=row[dateCol];
-    if(!dateVal||String(dateVal).trim()==='') continue;
-    const amount=parseAmt(row[listCol]);
-    const balance=parseAmt(row[balCol]);
-    const comment=row[cmtCol]?String(row[cmtCol]):'';
-    const paid=String(row[paidCol]||'').toUpperCase()==='TRUE';
-    if(amount!==0) out.push({date:String(dateVal),amount,balance,comment,paid,wallet:walletLabel,row:i+1});
-  }
-  return out;
-}
-
-/* =========================================================
-   GET MONTH DATA
+   DATA FUNCTIONS — via Apps Script proxy
    ========================================================= */
 async function getMonthData(month){
-  const sheetName=SHEET_NAMES[month];
-  // fetch full sheet
-  const rows=await sheetGet(sheetName+'!A:L');
-  // col indices: A=0 B=1 C=2 D=3 E=4 | G=6 H=7 I=8 J=9 K=10 | L=11
-  const w1=readWalletFromRows(rows,0,1,2,3,4,'main');
-  const w2=readWalletFromRows(rows,6,7,8,9,10,'pocket');
-  const coverUrl=(rows[0]&&rows[0][11])?String(rows[0][11]):'';
-  return {wallet1:w1, wallet2:w2, coverUrl, sheetName};
+  return await apiFetch({action:'getMonthData', month});
 }
-
-/* =========================================================
-   ADD TRANSACTION
-   ========================================================= */
 async function addTransactionAPI(month, wallet, dateStr, amount, comment, isIncome){
-  const sheetName=SHEET_NAMES[month];
-  const rows=await sheetGet(sheetName+'!A:K');
-  const isMain=wallet==='main';
-  const balCol=isMain?2:8;
-  // find last balance
-  let lastBal=0;
-  for(let i=rows.length-1;i>=1;i--){
-    const b=parseAmt((rows[i]||[])[balCol]);
-    if(b!==0){lastBal=b;break;}
-  }
-  const signed=isIncome?Math.abs(amount):-Math.abs(amount);
-  const newBal=lastBal+signed;
-
-  if(isMain){
-    // append row cols A-D (1-indexed cols A=1)
-    // Find next empty row for main wallet
-    let nextRow=rows.length+1;
-    // check if there\'s already a row with pocket data we should share
-    // For simplicity append to next row
-    const rowVals=[dateStr, isIncome?amount:-amount, newBal, comment];
-    await sheetAppend(sheetName, rowVals);
-  } else {
-    // pocket wallet cols G-J — append as new row, but put in cols G-J only
-    // We need to find next empty G-column row
-    let nextRow=2;
-    for(let i=rows.length-1;i>=1;i--){
-      if(rows[i]&&rows[i][6]&&String(rows[i][6]).trim()!==''){nextRow=i+2;break;}
-    }
-    const {apiKey,sheetId}=getCfg();
-    const range=encodeURIComponent(`${sheetName}!G${nextRow}:J${nextRow}`);
-    const r=await fetch(
-      `${BASE}/${sheetId}/values/${range}?valueInputOption=USER_ENTERED&key=${apiKey}`,
-      {method:'PUT',headers:{'Content-Type':'application/json','Referer':location.href},
-       body:JSON.stringify({values:[[dateStr, isIncome?amount:-amount, newBal, comment]]})}
-    );
-    if(!r.ok) throw new Error(`Write pocket error ${r.status}`);
-  }
-  return {success:true};
+  return await apiFetch({action:'addTransaction', month, wallet, date:dateStr, amount, comment, isIncome});
 }
-
-/* =========================================================
-   UPDATE TRANSACTION
-   ========================================================= */
 async function updateTransactionAPI(month, wallet, rowIndex, dateStr, amount, comment, paid){
-  const sheetName=SHEET_NAMES[month];
-  const isMain=wallet==='main';
-  const colStart=isMain?1:7; // A=1 or G=7
-  await sheetUpdate(sheetName, rowIndex, colStart, colStart+4,
-    [dateStr, amount, '', comment, paid?'TRUE':'FALSE']);
-  return {success:true};
+  return await apiFetch({action:'updateTransaction', month, wallet, row:rowIndex, date:dateStr, amount, comment, paid});
 }
-
-/* =========================================================
-   DELETE TRANSACTION
-   ========================================================= */
 async function deleteTransactionAPI(month, wallet, rowIndex){
-  const sheetName=SHEET_NAMES[month];
-  const isMain=wallet==='main';
-  const colStart=isMain?1:7;
-  await sheetClear(sheetName, rowIndex, colStart, colStart+4);
-  return {success:true};
+  return await apiFetch({action:'deleteTransaction', month, wallet, row:rowIndex});
 }
-
-/* =========================================================
-   SET COVER
-   ========================================================= */
 async function setCoverAPI(month, url){
-  const sheetName=SHEET_NAMES[month];
-  await sheetUpdate(sheetName, 1, 12, 12, [url]); // col L = 12
-  return {success:true};
+  return await apiFetch({action:'setCoverImage', month, url});
 }
 
 /* =========================================================
@@ -875,8 +733,8 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
 
 /* ---- INIT ---- */
 window.onload=()=>{
-  const {apiKey}=getCfg();
-  if(!apiKey){
+  const {scriptUrl}=getCfg();
+  if(!scriptUrl){
     document.getElementById('cfgModal').classList.add('open');
   } else {
     loadMonth();
