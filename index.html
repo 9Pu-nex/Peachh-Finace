@@ -2,596 +2,790 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Money Diary</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Pu-ne's Planner 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Kanit:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+
+/* ===== THEMES ===== */
 :root{
-  --paper:#f6efe3; --card:#fffdf8; --ink:#3a322b; --ink-soft:#8a7d6e;
-  --line:#e7dcc8; --accent:#c4683f; --green:#5b8c5a; --red:#c25b54;
-  --display:'Fraunces',serif; --hand:'Mali',cursive; --body:'IBM Plex Sans Thai',sans-serif;
+  --t50:#f0faf5;--t100:#c8eedd;--t400:#26c487;--t600:#0f8c5e;--t800:#064d35;
+  --bg:#f0ebe3;--surface:#fff;--tp:#1a1a1a;--ts:#7a6a5a;--border:#e8e0d8;
+  --card-shadow:0 4px 24px rgba(0,0,0,.10);
 }
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{background:var(--paper);color:var(--ink);font-family:var(--body);min-height:100vh;-webkit-text-size-adjust:100%;}
-body.paper-tex{background-image:radial-gradient(rgba(180,150,110,.07) 1px,transparent 1px);background-size:18px 18px;}
-button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
-input,select,textarea{font-family:var(--body);outline:none;font-size:16px;}
-.wrap{max-width:760px;margin:0 auto;padding:0 18px;}
-.diary-shadow{box-shadow:0 10px 30px -12px rgba(80,60,40,.35),0 2px 6px -2px rgba(80,60,40,.18);}
-.soft-shadow{box-shadow:0 4px 16px -8px rgba(80,60,40,.28);}
-.fade-in{animation:fi .5s ease both;}@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.pop{animation:pop .28s cubic-bezier(.2,.9,.3,1.3) both;}@keyframes pop{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
-.disp{font-family:var(--display);} .hand{font-family:var(--hand);} .muted{color:var(--ink-soft);} .center{text-align:center;}
-.svg{width:1em;height:1em;display:inline-block;vertical-align:-.125em;flex-shrink:0;}
+.th-blue   {--t50:#e8f3fd;--t100:#bcd9f8;--t400:#378add;--t600:#185fa5;--t800:#0c447c;--bg:#e5ecf5;--border:#d0dce8;}
+.th-orange {--t50:#fff4ea;--t100:#ffdcaa;--t400:#f07820;--t600:#b84f00;--t800:#7a3300;--bg:#f0e6d8;--border:#e8d4c0;}
+.th-rose   {--t50:#fdf0f3;--t100:#f9c6d0;--t400:#e8547a;--t600:#b83058;--t800:#7a1a38;--bg:#f5e8ec;--border:#eeccd4;}
+.th-purple {--t50:#f3f0fd;--t100:#d4c8f8;--t400:#7c5cef;--t600:#5234c8;--t800:#321888;--bg:#eae8f5;--border:#d8d0ee;}
+.th-yellow {--t50:#fffbea;--t100:#ffeea0;--t400:#f5c518;--t600:#c89000;--t800:#886000;--bg:#f5f0e0;--border:#ecdcb0;}
+.th-sky    {--t50:#eafaff;--t100:#b8edfc;--t400:#22c4f0;--t600:#0898c4;--t800:#046688;--bg:#e2f2f8;--border:#c0e4f0;}
+.th-slate  {--t50:#f0f2f5;--t100:#cdd4e0;--t400:#6680a0;--t600:#445870;--t800:#283848;--bg:#e8ecf2;--border:#d0d8e4;}
+.th-red    {--t50:#fff0f0;--t100:#ffc8c8;--t400:#e84040;--t600:#b82020;--t800:#780a0a;--bg:#f5e8e8;--border:#eecece;}
 
-/* shelf / landing */
-.brand{display:flex;align-items:center;gap:8px;color:var(--accent);font-family:var(--hand);font-weight:600;margin-bottom:4px;}
-.title-xl{font-family:var(--display);font-size:2.1rem;line-height:1.08;}
-.sub{color:var(--ink-soft);margin-top:6px;}
-.hero{position:relative;width:100%;height:200px;border-radius:18px;overflow:hidden;display:block;margin:22px 0 26px;}
-.hero .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.5));}
-.hero .ct{position:relative;height:100%;padding:18px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;text-align:left;}
-.lbl{font-size:.82rem;font-weight:600;color:var(--ink-soft);margin-bottom:8px;display:block;}
+/* ===== BASE ===== */
+html{-webkit-text-size-adjust:100%;touch-action:manipulation;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--tp);min-height:100vh;transition:background .3s;}
 
-/* dropdown */
-.dd{position:relative;width:100%;}
-.dd-btn{width:100%;display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;color:var(--ink);}
-.dd-btn .chev{transition:transform .2s;color:var(--ink-soft);}
-.dd-btn.open .chev{transform:rotate(180deg);}
-.dd-panel{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--card);border:1px solid var(--line);border-radius:14px;z-index:30;max-height:62vh;overflow-y:auto;box-shadow:0 12px 30px -10px rgba(80,60,40,.3);}
-.dd-item{width:100%;display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;}
-.dd-item:active{background:var(--paper);}
-.dd-dot{width:32px;height:42px;border-radius:7px;flex-shrink:0;background-size:cover;background-position:center;box-shadow:0 1px 4px rgba(0,0,0,.2);}
-.dd-name{flex:1;line-height:1.2;}
-.dd-bal{font-family:var(--display);font-weight:600;font-size:.95rem;}
-.dd-create{width:100%;padding:14px 16px;color:var(--accent);font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--paper);}
+/* ===== COVER ===== */
+.cover-wrap{position:relative;height:52vw;min-height:200px;max-height:320px;overflow:hidden;background:var(--t400);border-radius:0 0 32px 32px;}
+.cover-img{width:100%;height:100%;object-fit:cover;object-position:center center;display:none;}
+.cover-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.68) 0%,rgba(0,0,0,.04) 52%);}
+.cover-topbar{position:absolute;top:0;left:0;right:0;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;z-index:10;}
+.app-title{font-family:'Kanit',sans-serif;font-size:20px;font-weight:700;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.4);}
+.cover-info{position:absolute;bottom:20px;left:20px;color:#fff;}
+.cover-year{font-size:13px;opacity:.82;font-weight:400;}
+.cover-month{font-family:'Kanit',sans-serif;font-size:clamp(36px,10vw,52px);font-weight:700;line-height:1.05;}
 
-/* month */
-.cover{position:relative;height:208px;}
-.cover .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.5));}
-.cover .ct{position:relative;max-width:760px;margin:0 auto;height:100%;padding:16px 18px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;}
-.cover h1{font-family:var(--display);font-size:2.4rem;line-height:1;display:flex;align-items:center;gap:8px;}
-.toprow{display:flex;align-items:center;justify-content:space-between;gap:8px;}
-.pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.16);backdrop-filter:blur(4px);font-size:.85rem;white-space:nowrap;color:#fff;}
-.pill:active{background:rgba(255,255,255,.3);}
-.panel{margin-top:-26px;position:relative;padding-bottom:90px;}
-.card{background:var(--card);border-radius:18px;}
-.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:8px 14px;font-size:.9rem;background:var(--paper);color:var(--ink-soft);}
-.chip.on{background:var(--accent);color:#fff;}
-.sum-bal{display:flex;flex-direction:column;gap:2px;}
-.sum-bal b{font-family:var(--display);font-size:1.8rem;font-weight:700;}
-.stat{background:var(--paper);border-radius:13px;padding:12px 13px;}
-.stat .lb{display:flex;align-items:center;gap:4px;font-size:.75rem;color:var(--ink-soft);margin-bottom:3px;}
-.stat .vl{font-family:var(--display);font-weight:600;font-size:1.15rem;}
-.seg{display:inline-flex;background:var(--card);border-radius:999px;padding:4px;}
-.seg button{display:flex;align-items:center;gap:6px;border-radius:999px;padding:8px 14px;font-size:.88rem;color:var(--ink-soft);white-space:nowrap;}
-.seg button.on{background:var(--accent);color:#fff;}
-.btn-accent{background:var(--accent);color:#fff;border-radius:12px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:6px;}
-.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:16px 0 12px;flex-wrap:wrap;}
+/* theme switcher — scrollable pill row */
+.theme-switcher{display:flex;gap:8px;align-items:center;}
+.tb{width:26px;height:26px;border-radius:50%;border:2.5px solid transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;flex-shrink:0;}
+.tb.active{border-color:#fff;transform:scale(1.15);}
+.tb-mint  {background:linear-gradient(135deg,#26c487,#0f8c5e);}
+.tb-blue  {background:linear-gradient(135deg,#378add,#185fa5);}
+.tb-orange{background:linear-gradient(135deg,#f07820,#b84f00);}
+.tb-rose  {background:linear-gradient(135deg,#e8547a,#b83058);}
+.tb-purple{background:linear-gradient(135deg,#7c5cef,#5234c8);}
+.tb-yellow{background:linear-gradient(135deg,#f5c518,#c89000);}
+.tb-sky   {background:linear-gradient(135deg,#22c4f0,#0898c4);}
+.tb-slate {background:linear-gradient(135deg,#6680a0,#445870);}
+.tb-red   {background:linear-gradient(135deg,#e84040,#b82020);}
 
-/* calendar */
-.cal-dow{display:grid;grid-template-columns:repeat(7,1fr);}
-.cal-dow div{text-align:center;font-size:.72rem;font-weight:600;color:var(--ink-soft);padding:4px 0;}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
-.cell{min-height:54px;border-radius:9px;padding:5px 4px;display:flex;flex-direction:column;text-align:left;border:1px solid transparent;}
-.cell.has{background:var(--paper);}.cell.has:active{filter:brightness(.95);}
-.cell.today{border-color:var(--accent);}
-.cell .dn{font-size:.74rem;font-weight:500;}
-.cell .am{font-size:.58rem;line-height:1.2;margin-top:auto;word-break:break-all;}
+/* ===== PAGE SCROLL ===== */
+.page-scroll{padding:0 14px 120px;display:flex;flex-direction:column;gap:12px;margin-top:14px;}
 
-/* list */
-.daygrp{background:var(--card);border-radius:16px;overflow:hidden;}
-.dayhd{padding:9px 16px;background:var(--paper);font-family:var(--display);font-weight:600;}
-.row{display:flex;align-items:center;gap:11px;padding:12px 14px;border-top:1px solid var(--line);}
-.ic{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.check{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid var(--line);}
-.check.on{background:var(--green);border-color:var(--green);}
-
-/* modal */
-.overlay{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:14px;background:rgba(40,30,20,.45);backdrop-filter:blur(3px);}
-.modal{background:var(--card);border-radius:22px;padding:22px;width:100%;max-height:90vh;overflow-y:auto;}
-.modal h3{font-family:var(--display);font-size:1.35rem;}
-.field{display:block;margin-bottom:12px;}
-.field>span{display:block;font-size:.75rem;color:var(--ink-soft);margin-bottom:6px;}
-.inp{width:100%;border-radius:12px;padding:12px;background:var(--paper);border:1px solid var(--line);color:var(--ink);}
-.cov-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
-.cov{aspect-ratio:3/4;border-radius:10px;border:2.5px solid transparent;background-size:cover;background-position:center;}
-.cov.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--accent);}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:.9rem;z-index:60;animation:fi .3s ease;max-width:90vw;text-align:center;}
-
-@media(max-width:520px){
-  .wrap{padding:0 14px;}
-  .title-xl{font-size:1.65rem;}
-  .hero{height:172px;margin:18px 0 22px;}
-  .cover{height:182px;}
-  .cover h1{font-size:2rem;}
-  .pill{padding:7px 10px;font-size:.78rem;}
-  .modal{padding:18px;border-radius:18px;}
-  .sum-bal b{font-size:1.55rem;}
-  .stat .vl{font-size:1.02rem;}
-  .seg button{padding:8px 11px;font-size:.82rem;}
-  .cov-grid{grid-template-columns:repeat(4,1fr);}
-  .toolbar .btn-accent{padding:10px 14px;font-size:.85rem;}
+/* COVER EDIT BUTTON ROW */
+.cover-edit-btn-row{
+  width:100%;background:var(--surface);border:none;border-radius:18px;
+  box-shadow:var(--card-shadow);padding:14px 20px;
+  font-size:16px;font-family:'Sarabun',sans-serif;font-weight:700;
+  color:var(--t600);cursor:pointer;text-align:left;
+  -webkit-tap-highlight-color:transparent;display:flex;align-items:center;gap:10px;
 }
-@media(max-width:340px){.cell{min-height:48px;padding:4px 2px;}.cell .am{font-size:.52rem;}}
+.cover-edit-btn-row:active{opacity:.75;}
+
+/* MONTH NAV */
+.mnav-card{background:var(--surface);border-radius:22px;box-shadow:var(--card-shadow);display:flex;align-items:center;justify-content:space-between;padding:4px 8px;}
+.mnav-btn{background:none;border:none;cursor:pointer;color:var(--t600);font-size:30px;min-width:54px;min-height:54px;display:flex;align-items:center;justify-content:center;border-radius:16px;-webkit-tap-highlight-color:transparent;}
+.mnav-btn:active{background:var(--t50);}
+.mnav-label{font-family:'Kanit',sans-serif;font-size:20px;font-weight:700;color:var(--tp);}
+
+/* WALLET CARD */
+.wallet-card{background:var(--surface);border-radius:28px;box-shadow:var(--card-shadow);padding:20px 20px 18px;}
+.wallet-tabs{display:flex;gap:10px;margin-bottom:20px;}
+.wtab{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 10px;border-radius:50px;border:none;background:var(--bg);cursor:pointer;font-size:17px;font-family:'Sarabun',sans-serif;color:var(--ts);font-weight:700;min-height:54px;-webkit-tap-highlight-color:transparent;}
+.wtab.active{background:var(--t600);color:#fff;}
+.wtab:active:not(.active){opacity:.7;}
+.w-icon{font-size:20px;}
+.summary-balance-label{font-size:16px;color:var(--ts);font-weight:500;margin-bottom:4px;}
+.summary-balance-val{font-family:'Kanit',sans-serif;font-size:52px;font-weight:700;color:var(--tp);line-height:1;letter-spacing:-1px;margin-bottom:18px;}
+.summary-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.sc{background:var(--bg);border-radius:18px;padding:16px 16px;}
+.sc-label{font-size:14px;color:var(--ts);margin-bottom:6px;font-weight:600;}
+.sc-val{font-family:'Kanit',sans-serif;font-size:26px;font-weight:700;}
+.sc-val.inc{color:var(--t600);}
+.sc-val.exp{color:#c83030;}
+
+/* ACTION ROW */
+.action-row{display:flex;gap:10px;}
+.vtab{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:14px 8px;border-radius:22px;background:var(--surface);box-shadow:var(--card-shadow);border:none;cursor:pointer;font-size:16px;font-family:'Sarabun',sans-serif;color:var(--ts);font-weight:700;min-height:54px;-webkit-tap-highlight-color:transparent;}
+.vtab.active{background:var(--t600);color:#fff;}
+.vtab:active:not(.active){opacity:.75;}
+.add-btn{background:var(--t600);color:#fff;border:none;border-radius:22px;padding:14px 18px;font-size:16px;font-family:'Kanit',sans-serif;font-weight:700;cursor:pointer;min-height:54px;box-shadow:var(--card-shadow);flex-shrink:0;-webkit-tap-highlight-color:transparent;}
+.add-btn:active{opacity:.8;}
+
+/* CALENDAR CARD */
+.cal-card{background:var(--surface);border-radius:28px;box-shadow:var(--card-shadow);padding:18px 14px 16px;}
+.cal-cycle-label{text-align:center;font-size:14px;color:var(--ts);margin-bottom:14px;font-weight:600;}
+.cal-header{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:6px;}
+.cal-dn{text-align:center;font-size:14px;color:var(--ts);padding:4px 0;font-weight:800;}
+.cal-dn.sun{color:#c83030;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
+.cc{min-height:clamp(72px,18vw,100px);border-radius:14px;border:1.5px solid var(--border);background:var(--surface);padding:7px 5px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;}
+.cc:active{background:var(--t50);border-color:var(--t400);}
+.cc.today{border-color:var(--t600);border-width:2.5px;}
+.cc.empty{background:transparent;border-color:transparent;pointer-events:none;}
+.cc-num{font-size:15px;font-weight:700;color:var(--tp);margin-bottom:3px;}
+.today-circle{background:var(--t600);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;}
+.cc-dots{display:flex;flex-direction:column;gap:2px;}
+.cdot{font-size:10px;border-radius:4px;padding:2px 4px;line-height:1.3;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cdot.inc{background:var(--t50);color:var(--t800);}
+.cdot.exp{background:#ffeaea;color:#a03030;}
+.cdot.p2{background:#f0eaff;color:#5b2fa0;}
+
+/* LIST */
+.list-wrap{padding:0 0 20px;}
+.ldg{margin-bottom:18px;}
+.ldh{font-size:14px;font-weight:800;color:var(--t600);margin-bottom:8px;padding:0 4px;letter-spacing:.4px;}
+.li{background:var(--surface);border-radius:18px;box-shadow:0 2px 10px rgba(0,0,0,.07);padding:18px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;}
+.li:active{opacity:.8;}
+.li-left{flex:1;min-width:0;padding-right:14px;}
+.li-comment{font-size:17px;font-weight:600;color:var(--tp);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.li-sub{font-size:13px;color:var(--ts);margin-top:4px;}
+.li-badges{margin-top:6px;}
+.badge{display:inline-block;font-size:12px;border-radius:6px;padding:3px 10px;font-weight:700;background:var(--t50);color:var(--t800);}
+.li-amount{font-family:'Kanit',sans-serif;font-size:20px;font-weight:700;white-space:nowrap;flex-shrink:0;}
+.li-amount.inc{color:var(--t600);}
+.li-amount.exp{color:#c83030;}
+
+/* ===== MODAL — center pop ===== */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:300;align-items:center;justify-content:center;padding:16px;}
+.mo.open{display:flex;}
+.mbox{background:var(--surface);border-radius:28px;padding:28px 24px 32px;width:100%;max-width:460px;max-height:88dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:popIn .22s cubic-bezier(.34,1.3,.64,1);}
+@keyframes popIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
+.mtitle{font-family:'Kanit',sans-serif;font-size:22px;font-weight:700;margin-bottom:20px;color:var(--tp);}
+.mclose{float:right;background:var(--bg);border:none;font-size:18px;cursor:pointer;color:var(--ts);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:-6px;-webkit-tap-highlight-color:transparent;}
+.fg{margin-bottom:18px;}
+.fl{font-size:15px;font-weight:700;color:var(--ts);margin-bottom:8px;display:block;}
+.fi{width:100%;padding:16px 18px;border:2px solid var(--border);border-radius:16px;font-size:18px;font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--tp);outline:none;-webkit-appearance:none;}
+.fi:focus{border-color:var(--t400);}
+.type-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+.tbtn{padding:16px;border:2px solid var(--border);border-radius:16px;background:none;cursor:pointer;font-size:17px;font-family:'Sarabun',sans-serif;font-weight:700;min-height:58px;-webkit-tap-highlight-color:transparent;color:var(--ts);}
+.tbtn.income.active{background:var(--t50);border-color:var(--t400);color:var(--t800);}
+.tbtn.expense.active{background:#ffeaea;border-color:#c83030;color:#903030;}
+.wsel{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+.wsbtn{padding:16px;border:2px solid var(--border);border-radius:16px;background:none;cursor:pointer;font-size:17px;font-family:'Sarabun',sans-serif;font-weight:700;min-height:58px;-webkit-tap-highlight-color:transparent;color:var(--ts);}
+.wsbtn.active{background:var(--t50);border-color:var(--t400);color:var(--t800);}
+.wsbtn.pocket.active{background:#f0eaff;border-color:#9b6fdd;color:#5b2fa0;}
+.bprimary{width:100%;padding:18px;background:var(--t600);color:#fff;border:none;border-radius:18px;font-size:18px;font-family:'Kanit',sans-serif;font-weight:700;cursor:pointer;margin-top:6px;-webkit-tap-highlight-color:transparent;}
+.bprimary:active{opacity:.8;}
+.bdanger{width:100%;padding:16px;background:none;border:2px solid #c83030;color:#c83030;border-radius:18px;font-size:16px;font-family:'Sarabun',sans-serif;cursor:pointer;margin-top:10px;-webkit-tap-highlight-color:transparent;}
+
+/* COVER MODAL */
+.cmo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:400;align-items:center;justify-content:center;padding:16px;}
+.cmo.open{display:flex;}
+.cmbox{background:var(--surface);border-radius:28px;padding:28px 24px 32px;width:100%;max-width:460px;max-height:88dvh;overflow-y:auto;animation:popIn .22s cubic-bezier(.34,1.3,.64,1);}
+.pos-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.pbtn{padding:10px 16px;border:2px solid var(--border);border-radius:12px;background:none;font-size:15px;font-family:'Sarabun',sans-serif;color:var(--ts);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.pbtn.active{background:var(--t50);border-color:var(--t400);color:var(--t800);font-weight:700;}
+
+/* TOAST */
+.toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%);background:rgba(6,40,20,.92);color:#fff;padding:14px 28px;border-radius:24px;font-size:16px;font-weight:700;opacity:0;transition:opacity .3s;z-index:500;pointer-events:none;white-space:nowrap;max-width:88vw;text-align:center;}
+.toast.show{opacity:1;}
+
+/* LOADING */
+.loading{text-align:center;padding:56px 20px;color:var(--ts);}
+.sp{width:40px;height:40px;border:4px solid var(--border);border-top-color:var(--t400);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 14px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* CONFIG MODAL */
+.cfg-mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:600;align-items:center;justify-content:center;padding:16px;}
+.cfg-mo.open{display:flex;}
+.cfg-box{background:var(--surface);border-radius:28px;padding:28px 24px 32px;width:100%;max-width:460px;animation:popIn .22s cubic-bezier(.34,1.3,.64,1);}
+.cfg-title{font-family:'Kanit',sans-serif;font-size:22px;font-weight:700;margin-bottom:8px;color:var(--tp);}
+.cfg-sub{font-size:14px;color:var(--ts);margin-bottom:20px;line-height:1.5;}
+.cfg-link{color:var(--t600);text-decoration:underline;}
+.cfg-warn{background:#fff8e1;border:1.5px solid #f5c518;border-radius:12px;padding:12px 14px;font-size:13px;color:#7a5800;margin-bottom:18px;line-height:1.5;}
 </style>
 </head>
-<body class="paper-tex">
-<div id="app"></div>
-<div id="modal-root"></div>
+<body>
+
+<!-- COVER (topbar overlaid on top) -->
+<div class="cover-wrap" id="coverWrap">
+  <img id="coverImg" class="cover-img" src="" alt="">
+  <div class="cover-overlay"></div>
+  <div class="cover-topbar">
+    <span class="app-title" style="color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.4);">🌿 Pu-ne's</span>
+    <div class="theme-switcher">
+      <button class="tb tb-mint active" onclick="setTheme('mint')" title="มิ้นท์"></button>
+      <button class="tb tb-blue" onclick="setTheme('blue')" title="ฟ้า"></button>
+      <button class="tb tb-orange" onclick="setTheme('orange')" title="ส้ม"></button>
+      <button class="tb tb-rose" onclick="setTheme('rose')" title="ชมพู"></button>
+      <button class="tb tb-purple" onclick="setTheme('purple')" title="ม่วง"></button>
+      <button class="tb tb-yellow" onclick="setTheme('yellow')" title="เหลือง"></button>
+      <button class="tb tb-sky" onclick="setTheme('sky')" title="ฟ้าใส"></button>
+      <button class="tb tb-slate" onclick="setTheme('slate')" title="เทา"></button>
+      <button class="tb tb-red" onclick="setTheme('red')" title="แดง"></button>
+    </div>
+  </div>
+  <div class="cover-info">
+    <div class="cover-year">ปี 2569</div>
+    <div class="cover-month" id="coverMonthName">มกราคม</div>
+  </div>
+</div>
+
+<!-- SCROLLABLE PAGE -->
+<div class="page-scroll">
+
+  <!-- COVER EDIT BTN -->
+  <button class="cover-edit-btn-row" onclick="openCoverModal()">🖼️ เปลี่ยน / ตั้งค่าภาพปก</button>
+
+  <!-- MONTH NAV -->
+  <div class="mnav-card">
+    <button class="mnav-btn" onclick="changeMonth(-1)">‹</button>
+    <span class="mnav-label" id="navLabel">มกราคม 2026</span>
+    <button class="mnav-btn" onclick="changeMonth(1)">›</button>
+  </div>
+
+  <!-- WALLET + SUMMARY CARD -->
+  <div class="wallet-card">
+    <div class="wallet-tabs">
+      <button class="wtab active" id="wt1" onclick="switchWallet('main')">
+        <span class="w-icon">💼</span> ใบหลัก
+      </button>
+      <button class="wtab" id="wt2" onclick="switchWallet('pocket')">
+        <span class="w-icon">🐷</span> ใบรอง
+      </button>
+    </div>
+    <div class="summary-balance-label" id="sBalanceLabel">คงเหลือใบหลัก</div>
+    <div class="summary-balance-val" id="sBalance">—</div>
+    <div class="summary-row">
+      <div class="sc">
+        <div class="sc-label">↗ รายรับ</div>
+        <div class="sc-val inc" id="sIncome">—</div>
+      </div>
+      <div class="sc">
+        <div class="sc-label">↘ รายจ่าย</div>
+        <div class="sc-val exp" id="sExpense">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTION ROW -->
+  <div class="action-row">
+    <button class="vtab active" onclick="switchView('cal')">📅 ปฏิทิน</button>
+    <button class="vtab" onclick="switchView('list')">☰ รายการ</button>
+    <button class="add-btn" onclick="openAddModal()">＋ เพิ่มรายการ</button>
+  </div>
+
+  <!-- CALENDAR CARD -->
+  <div id="calView">
+    <div class="cal-card">
+      <div class="cal-cycle-label" id="cycleLabel"></div>
+      <div class="cal-header">
+        <div class="cal-dn sun">อา</div><div class="cal-dn">จ</div><div class="cal-dn">อ</div>
+        <div class="cal-dn">พ</div><div class="cal-dn">พฤ</div><div class="cal-dn">ศ</div><div class="cal-dn">ส</div>
+      </div>
+      <div class="cal-grid" id="calGrid">
+        <div class="loading" style="grid-column:span 7"><div class="sp"></div>กำลังโหลด...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIST -->
+  <div id="listView" style="display:none">
+    <div class="list-wrap">
+      <div id="listContent"><div class="loading"><div class="sp"></div>กำลังโหลด...</div></div>
+    </div>
+  </div>
+
+</div><!-- end page-scroll -->
+
+<!-- TX MODAL — centered -->
+<div class="mo" id="txModal" onclick="closeBg(event,'txModal',closeTxModal)">
+  <div class="mbox">
+    <button class="mclose" onclick="closeTxModal()">✕</button>
+    <div class="mtitle" id="mtitle">เพิ่มรายการ</div>
+
+    <div id="wselWrap">
+      <div class="fl">กระเป๋า</div>
+      <div class="wsel">
+        <button class="wsbtn active" id="wsMain" onclick="setModalWallet('main')">💼 ใบหลัก</button>
+        <button class="wsbtn pocket" id="wsPocket" onclick="setModalWallet('pocket')">🐷 ใบรอง</button>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <button class="tbtn income active" id="btnInc" onclick="setType('income')">＋ รายรับ</button>
+      <button class="tbtn expense" id="btnExp" onclick="setType('expense')">－ รายจ่าย</button>
+    </div>
+    <div class="fg">
+      <label class="fl">วันที่ (dd/MM/yy)</label>
+      <input class="fi" id="txDate" placeholder="28/05/26">
+    </div>
+    <div class="fg">
+      <label class="fl">จำนวนเงิน (บาท)</label>
+      <input class="fi" id="txAmount" type="number" min="0" step="0.01" placeholder="0.00">
+    </div>
+    <div class="fg">
+      <label class="fl">รายละเอียด</label>
+      <input class="fi" id="txComment" placeholder="เช่น KFC, เงินเดือน...">
+    </div>
+    <div class="fg" id="paidWrap" style="display:none">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+        <input type="checkbox" id="txPaid" style="width:22px;height:22px;accent-color:var(--t400)">
+        <span style="font-size:16px;font-weight:600;color:var(--ts);">ชำระแล้ว (Paid)</span>
+      </label>
+    </div>
+    <button class="bprimary" id="mSaveBtn" onclick="saveTx()">บันทึก</button>
+    <button class="bdanger" id="mDelBtn" style="display:none" onclick="deleteTx()">🗑 ลบรายการนี้</button>
+  </div>
+</div>
+
+<!-- COVER MODAL — centered -->
+<div class="cmo" id="coverModal" onclick="closeBg(event,'coverModal',()=>document.getElementById('coverModal').classList.remove('open'))">
+  <div class="cmbox">
+    <button class="mclose" onclick="document.getElementById('coverModal').classList.remove('open')">✕</button>
+    <div class="mtitle">🖼️ ภาพปกเดือนนี้</div>
+    <div class="fg">
+      <label class="fl">URL รูปภาพ</label>
+      <input class="fi" id="coverUrlInput" type="url" placeholder="https://...">
+    </div>
+    <div class="fg">
+      <label class="fl">โฟกัสรูป (Crop)</label>
+      <div class="pos-btns">
+        <button class="pbtn" id="pos-top" onclick="setPos('top')">⬆ บน</button>
+        <button class="pbtn active" id="pos-center" onclick="setPos('center')">⦿ กลาง</button>
+        <button class="pbtn" id="pos-bottom" onclick="setPos('bottom')">⬇ ล่าง</button>
+        <button class="pbtn" id="pos-top-left" onclick="setPos('top left')">↖ บนซ้าย</button>
+        <button class="pbtn" id="pos-top-right" onclick="setPos('top right')">↗ บนขวา</button>
+      </div>
+    </div>
+    <button class="bprimary" onclick="saveCover()">บันทึก</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+
+<!-- CONFIG MODAL (first-time setup) -->
+<div class="cfg-mo" id="cfgModal">
+  <div class="cfg-box">
+    <div class="cfg-title">⚙️ ตั้งค่าการเชื่อมต่อ</div>
+    <div class="cfg-sub">กรอก API Key และ Spreadsheet ID เพื่อเชื่อม Google Sheets</div>
+    <div class="cfg-warn">
+      ⚠️ API Key จะถูกเก็บใน localStorage บนเครื่องคุณเท่านั้น<br>
+      อย่า commit ค่านี้ขึ้น GitHub repository สาธารณะ
+    </div>
+    <div class="fg">
+      <label class="fl">Google Sheets API Key
+        <a class="cfg-link" href="https://console.cloud.google.com/apis/credentials" target="_blank"> (สร้างที่นี่)</a>
+      </label>
+      <input class="fi" id="cfgApiKey" placeholder="AIzaSy..." style="font-size:14px;">
+    </div>
+    <div class="fg">
+      <label class="fl">Spreadsheet ID</label>
+      <input class="fi" id="cfgSheetId" value="16MsjlIK4YJxNWj_CDr9ta3Wm4bzbaDBi5Izrzs3t6Z8" style="font-size:14px;">
+    </div>
+    <button class="bprimary" onclick="saveConfig()">บันทึกและเริ่มใช้งาน</button>
+  </div>
+</div>
 
 <script>
-const SEED = {"2026-01":{"id":"2026-01","year":2026,"month":0,"transactions":[{"date":"2025-12-26","desc":"Income","amount":20445.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"56262f56"},{"date":"2025-12-28","desc":"Pocket","amount":3391.82,"type":"income","comment":"","wallet":"second","paid":false,"id":"acea01f4"},{"date":"2025-12-26","desc":"Shopeepay","amount":5174.03,"type":"expense","comment":"","wallet":"main","paid":true,"id":"33ecbd35"},{"date":"2025-12-29","desc":"อาเปรี้ยวโอนให้","amount":2000.0,"type":"income","comment":"","wallet":"second","paid":false,"id":"ecfafb6e"},{"date":"2025-12-27","desc":"ค่าฮันนี่โทสต์","amount":168.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"a3582283"},{"date":"2026-01-01","desc":"Claude ai","amount":695.12,"type":"expense","comment":"","wallet":"second","paid":false,"id":"3042016c"},{"date":"2025-12-27","desc":"","amount":70.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"3db71289"},{"date":"2026-01-01","desc":"Taiho 1/7","amount":4498.83,"type":"income","comment":"","wallet":"second","paid":false,"id":"8145a76d"},{"date":"2025-12-27","desc":"","amount":290.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"9315cadb"},{"date":"2025-12-27","desc":"","amount":20.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"658a8a57"},{"date":"2025-12-27","desc":"","amount":538.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"c2047a5d"},{"date":"2025-12-27","desc":"","amount":500.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"14d30339"},{"date":"2026-01-01","desc":"AIS","amount":373.43,"type":"expense","comment":"","wallet":"main","paid":true,"id":"034abc02"},{"date":"2026-01-01","desc":"AIS FIBER","amount":535.0,"type":"expense","comment":"","wallet":"main","paid":true,"id":"c45fe4cf"},{"date":"2026-01-01","desc":"SCB","amount":4498.83,"type":"expense","comment":"","wallet":"main","paid":true,"id":"d0142b63"},{"date":"2026-01-01","desc":"ของเเจกปีใหม่","amount":326.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"0096d2eb"},{"date":"2026-01-04","desc":"ของเเจกปีใหม่","amount":700.0,"type":"expense","comment":"","wallet":"main","paid":true,"id":"880782f9"},{"date":"2025-12-28","desc":"หัวชาร์จ ROG","amount":1191.0,"type":"expense","comment":"","wallet":"main","paid":true,"id":"80f87c89"},{"date":"2026-01-03","desc":"ของเเจกปีใหม่","amount":297.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"c177b2ad"},{"date":"2026-01-03","desc":"","amount":200.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"4d799959"},{"date":"2026-01-04","desc":"Amazon","amount":110.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"638a9067"},{"date":"2026-01-04","desc":"ไก่ย่าง 5 ดาว","amount":119.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"2e69e87e"},{"date":"2026-01-04","desc":"7-11","amount":200.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"f4f7d925"},{"date":"2026-01-04","desc":"เติมน้ำมัน","amount":500.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"a3ff50fb"},{"date":"2026-01-05","desc":"School bright","amount":300.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"f665aa95"},{"date":"2026-01-05","desc":"","amount":3000.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"e3465320"},{"date":"2026-01-06","desc":"มานา หม่าล่า","amount":215.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"7c8df30c"},{"date":"2026-01-06","desc":"หม่าล่า","amount":113.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"fd6d1b21"},{"date":"2026-01-07","desc":"ก๋วยเตี๋ยวเเคง","amount":60.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"99c4fd97"},{"date":"2026-01-07","desc":"7-11","amount":200.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"5dc58bd8"},{"date":"2026-01-07","desc":"KFC","amount":163.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"4c29a0fc"},{"date":"2026-01-08","desc":"หม่าล่า","amount":189.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"4570db9d"},{"date":"2026-01-08","desc":"A3","amount":145.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"e4740750"},{"date":"2026-01-08","desc":"","amount":133.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"4bafbda2"},{"date":"2026-01-08","desc":"","amount":157.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"39f55509"},{"date":"2026-01-08","desc":"","amount":150.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"94e420d1"},{"date":"2026-01-08","desc":"","amount":129.14,"type":"income","comment":"","wallet":"main","paid":false,"id":"7bacb53d"},{"date":"2026-01-11","desc":"กระเป๋าอเนกประสงค์","amount":632.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"3df17dda"},{"date":"2026-01-11","desc":"","amount":500.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"e0df52d3"},{"date":"2026-01-11","desc":"","amount":148.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"115dc2c4"},{"date":"2026-01-11","desc":"","amount":120.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"e94e5e28"},{"date":"2026-01-11","desc":"","amount":60.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"26a19603"},{"date":"2026-01-11","desc":"","amount":65.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"c7f27a3d"},{"date":"2026-01-11","desc":"","amount":160.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"7972f813"}],"coverType":"preset","coverValue":"night"},"2026-02":{"id":"2026-02","year":2026,"month":1,"transactions":[{"date":"2026-01-28","desc":"Income","amount":20970.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"7ec40138"},{"date":"2025-12-28","desc":"Pocket","amount":8211.53,"type":"income","comment":"","wallet":"second","paid":false,"id":"743e3452"},{"date":"2026-01-28","desc":"Shopeepay","amount":3762.55,"type":"expense","comment":"","wallet":"main","paid":true,"id":"9ad87611"},{"date":"2026-02-01","desc":"Claude ai","amount":692.26,"type":"expense","comment":"","wallet":"second","paid":false,"id":"8fd23715"},{"date":"2026-01-28","desc":"School Bright","amount":250.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"d2fd7d79"},{"date":"2026-02-01","desc":"Resident Evil 9","amount":1890.0,"type":"expense","comment":"","wallet":"second","paid":false,"id":"2a18badd"},{"date":"2026-01-28","desc":"เติมน้ำมัน","amount":500.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"cc7695ec"},{"date":"2026-02-01","desc":"เจ๊โอน","amount":200.0,"type":"income","comment":"","wallet":"second","paid":false,"id":"eba8f043"},{"date":"2026-01-28","desc":"เลี้ยงส่งข้าวฟ่าง","amount":320.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"67093638"},{"date":"2026-02-08","desc":"เพชรตาปี","amount":1428.0,"type":"expense","comment":"","wallet":"second","paid":false,"id":"203cd7ad"},{"date":"2026-01-30","desc":"เลี้ยงกอง Starbuck","amount":500.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"3ef2ce85"},{"date":"2026-02-08","desc":"Youtube Premirem","amount":200.0,"type":"expense","comment":"","wallet":"second","paid":false,"id":"62bd9409"},{"date":"2026-02-01","desc":"AIS","amount":373.43,"type":"expense","comment":"","wallet":"main","paid":true,"id":"e34df712"},{"date":"2026-02-01","desc":"AIS FIBER","amount":535.0,"type":"expense","comment":"","wallet":"main","paid":true,"id":"221a2c63"},{"date":"2026-01-30","desc":"7-11","amount":200.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"2bddccb5"},{"date":"2026-01-30","desc":"มานา หม่าล่า","amount":60.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"4be9bc58"},{"date":"2026-01-30","desc":"มานา หม่าล่า","amount":170.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"834c4de4"},{"date":"2026-01-31","desc":"KFC","amount":510.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"0ecd08f2"},{"date":"2026-01-31","desc":"Line man","amount":163.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"5a0a1d84"},{"date":"2026-02-01","desc":"Line man","amount":195.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"43cb73bf"},{"date":"2026-02-01","desc":"Line man","amount":151.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"14f8ba04"},{"date":"2026-02-01","desc":"พรบ.งวดที่ 1/10","amount":1470.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"2bf48514"},{"date":"2026-02-01","desc":"พี่เมโอนคืน","amount":170.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"465f8658"},{"date":"2026-02-02","desc":"School Bright","amount":300.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"98a24dc8"},{"date":"2026-02-02","desc":"Big C","amount":852.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"8fca0b31"},{"date":"2026-02-02","desc":"Moshi Moshi","amount":204.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"a13d90aa"},{"date":"2026-02-02","desc":"","amount":255.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"988da186"},{"date":"2026-02-03","desc":"Line man","amount":271.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"cb3a0315"},{"date":"2026-02-03","desc":"","amount":120.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"97c8ce14"},{"date":"2026-02-04","desc":"เค้กพี่อุ้ม","amount":240.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"da095749"},{"date":"2026-02-04","desc":"Line man","amount":163.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"e7d699af"},{"date":"2026-02-04","desc":"SD Super Gudam / ZZ","amount":638.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"2b063072"},{"date":"2026-02-04","desc":"กระเป๋านักเรียน","amount":169.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"0571bc51"},{"date":"2026-02-05","desc":"ค่าอาหารเเมว","amount":172.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"5a00612b"},{"date":"2026-02-06","desc":"มานา หม่าล่า","amount":307.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"f3df3956"},{"date":"2026-02-06","desc":"KFC","amount":454.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"3f4cf580"},{"date":"2026-02-07","desc":"Pizza กับ Nicole","amount":299.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"7aab6883"},{"date":"2026-02-07","desc":"Nicole โอนคืน","amount":150.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"71187b5e"},{"date":"2026-02-07","desc":"Amazon","amount":84.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"fad643d1"},{"date":"2026-02-07","desc":"Taiho 1/7","amount":8090.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"cdb4deb0"},{"date":"2026-02-08","desc":"เพชรตาปี","amount":476.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"dd40d8a1"},{"date":"2026-02-08","desc":"7-11","amount":200.01,"type":"expense","comment":"","wallet":"main","paid":false,"id":"bc983257"}],"coverType":"preset","coverValue":"lavender"},"2026-03":{"id":"2026-03","year":2026,"month":2,"transactions":[{"date":"2026-02-27","desc":"Income","amount":20670.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"3a6f8264"},{"date":"2026-02-28","desc":"Pocket","amount":16.8,"type":"income","comment":"","wallet":"second","paid":false,"id":"82e9bdc7"},{"date":"2026-02-27","desc":"7-11","amount":500.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"d80536e4"},{"date":"2026-02-28","desc":"K+","amount":1000.0,"type":"income","comment":"","wallet":"second","paid":false,"id":"0908844f"},{"date":"2026-02-28","desc":"Shopeepay","amount":4714.22,"type":"expense","comment":"","wallet":"main","paid":true,"id":"a95f87ed"},{"date":"2026-03-01","desc":"Claude ai","amount":685.25,"type":"expense","comment":"","wallet":"second","paid":false,"id":"0c6e6b93"},{"date":"2026-02-28","desc":"Line man","amount":221.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"cdf49e95"},{"date":"2026-03-06","desc":"K+","amount":500.0,"type":"income","comment":"","wallet":"second","paid":false,"id":"b0ac91f5"},{"date":"2026-02-28","desc":"Hair cut","amount":100.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"b6e1a5da"},{"date":"2026-03-06","desc":"Lost&found , RE2","amount":395.1,"type":"expense","comment":"","wallet":"second","paid":false,"id":"42f1b333"},{"date":"2026-02-28","desc":"BIG C","amount":854.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"58f87c18"},{"date":"2026-03-24","desc":"Big C","amount":180.0,"type":"expense","comment":"","wallet":"second","paid":false,"id":"b783854a"},{"date":"2026-02-28","desc":"SCB","amount":1000.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"f1d711da"},{"date":"2026-03-26","desc":"Kuimmy","amount":65.0,"type":"expense","comment":"","wallet":"second","paid":false,"id":"47eceaaa"},{"date":"2026-03-01","desc":"Line man Bonchon","amount":514.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"d49526b9"},{"date":"2026-03-02","desc":"School Bright","amount":300.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"ee17d6fd"},{"date":"2026-03-02","desc":"7-11","amount":200.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"3b1b8ba2"},{"date":"2026-03-02","desc":"ค่าพรบงวด 2/10","amount":1470.0,"type":"expense","comment":"","wallet":"main","paid":true,"id":"b39bebfd"},{"date":"2026-03-02","desc":"ค่าทำบุญ","amount":520.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"0a01793b"},{"date":"2026-03-02","desc":"AIS","amount":373.43,"type":"expense","comment":"","wallet":"main","paid":true,"id":"21ede14f"},{"date":"2026-03-02","desc":"AIS","amount":535.0,"type":"expense","comment":"","wallet":"main","paid":true,"id":"45bbfad8"},{"date":"2026-03-02","desc":"line man","amount":178.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"90c8af05"},{"date":"2026-03-03","desc":"CMF Watch case","amount":391.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"f396eeb4"},{"date":"2026-03-03","desc":"Mana Mala","amount":194.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"b2558933"},{"date":"2026-03-04","desc":"kfc","amount":263.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"57b8be07"},{"date":"2026-03-05","desc":"Funky freid","amount":148.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"c6e9dc9d"},{"date":"2026-03-05","desc":"เติมน้ำมัน","amount":300.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"e76b55e9"},{"date":"2026-03-05","desc":"7-11","amount":300.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"2e2bbd58"},{"date":"2026-03-06","desc":"Star bucks","amount":400.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"d36277f3"},{"date":"2026-03-06","desc":"Line man Mala","amount":138.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"b17c6487"},{"date":"2026-03-06","desc":"Lost&found , RE2","amount":500.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"e7a68af7"},{"date":"2026-03-08","desc":"Line man Crispy pork","amount":181.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"c40eb86f"},{"date":"2026-03-08","desc":"Line man Funky freid","amount":178.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"419bd364"},{"date":"2026-03-08","desc":"Line man Mala","amount":148.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"9cc15573"},{"date":"2026-03-09","desc":"7-11","amount":300.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"30d084a2"},{"date":"2026-03-09","desc":"HBD TIM","amount":319.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"e9f14719"},{"date":"2026-03-10","desc":"น้ำคิมมี่","amount":65.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"9707ccaf"},{"date":"2026-03-10","desc":"7-11","amount":300.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"a45575c1"},{"date":"2026-03-11","desc":"Line man KFC","amount":242.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"447acb20"},{"date":"2026-03-12","desc":"A3","amount":75.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"74de5f13"},{"date":"2026-03-12","desc":"School bright","amount":120.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"e8d1a73e"},{"date":"2026-03-12","desc":"Line man KFC","amount":232.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"32c679f7"},{"date":"2026-03-14","desc":"Vanila","amount":400.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"61b11082"},{"date":"2026-03-14","desc":"7-11","amount":500.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"ca3eaee3"},{"date":"2026-03-14","desc":"7-11","amount":200.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"464296ef"},{"date":"2026-03-14","desc":"น้ำปีโป้ปั่น","amount":107.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"0bdd34ea"},{"date":"2026-03-15","desc":"หม่าล่า","amount":138.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"e4602c23"},{"date":"2026-03-15","desc":"KFC","amount":108.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"9c88662d"},{"date":"2026-03-15","desc":"เงินปันผล","amount":87.31,"type":"income","comment":"","wallet":"main","paid":false,"id":"93169368"},{"date":"2026-03-16","desc":"School Bright","amount":180.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"b98c6f16"},{"date":"2026-03-16","desc":"KFC","amount":242.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"4c252492"},{"date":"2026-03-16","desc":"Shopee เข็มขัด","amount":206.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"900a9a72"},{"date":"2026-03-16","desc":"Shopee กระเป๋า","amount":124.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"8fe3284c"},{"date":"2026-03-17","desc":"KFC","amount":143.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"fd23a54a"},{"date":"2026-03-18","desc":"7-11","amount":300.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"31b6e1f2"},{"date":"2026-03-18","desc":"KFC","amount":222.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"4ea85921"},{"date":"2026-03-19","desc":"7-11","amount":200.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"b2a6cd71"},{"date":"2026-03-20","desc":"ก๋วยเตี๋ยวกากหมู","amount":340.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"88185e76"},{"date":"2026-03-20","desc":"ก๋วยเตี๋ยวจี๊ป,พี่ฟา","amount":180.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"024326be"},{"date":"2026-03-20","desc":"กล้วยทอด","amount":50.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"5603c260"},{"date":"2026-03-20","desc":"ชาเขียวปั่น","amount":60.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"6e538236"},{"date":"2026-03-21","desc":"ไก่ย่าง 5 ดาว","amount":347.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"4c56f3c7"},{"date":"2026-03-22","desc":"น้ำปีโป้ปั่น","amount":109.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"717cbb17"},{"date":"2026-03-22","desc":"พิซซ่าหารกับเจ๊","amount":127.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"c4ee29c9"},{"date":"2026-03-23","desc":"ข้าวหมูทอดไรซ์เบอรี่","amount":126.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"36e7ae33"},{"date":"2026-03-24","desc":"School bright","amount":180.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"120625d9"},{"date":"2026-03-25","desc":"Big C","amount":239.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"aa787621"}],"coverType":"preset","coverValue":"forest"},"2026-04":{"id":"2026-04","year":2026,"month":3,"transactions":[{"date":"2026-03-27","desc":"Income","amount":20670.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"42774f31"},{"date":"2026-03-27","desc":"Pocket","amount":191.42,"type":"income","comment":"","wallet":"second","paid":false,"id":"d0e04a50"},{"date":"2026-03-27","desc":"7-11","amount":300.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"05541837"},{"date":"2026-03-30","desc":"DQ-Mango","amount":69.0,"type":"expense","comment":"","wallet":"second","paid":false,"id":"4425cbbe"},{"date":"2026-03-27","desc":"Shopeepay","amount":4714.22,"type":"expense","comment":"","wallet":"main","paid":true,"id":"6db1f8a4"},{"date":"2026-03-31","desc":"K+","amount":1000.0,"type":"income","comment":"","wallet":"second","paid":false,"id":"f6cfbd4f"},{"date":"2026-03-28","desc":"MANA MALA","amount":290.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"f66de387"},{"date":"2026-04-01","desc":"Claude ai","amount":685.25,"type":"expense","comment":"","wallet":"second","paid":false,"id":"6e9b0acc"},{"date":"2026-03-28","desc":"CAR GAS Filing","amount":500.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"d8d97920"},{"date":"2026-03-28","desc":"MANA MALA","amount":228.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"5ac1cdc6"},{"date":"2026-03-28","desc":"MANA MALA","amount":50.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"69314ce8"},{"date":"2026-03-28","desc":"EMS EXAM","amount":97.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"a4b7401a"},{"date":"2026-03-28","desc":"Multivitamin","amount":428.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"d271a138"},{"date":"2026-03-28","desc":"Big C","amount":596.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"01610117"},{"date":"2026-03-29","desc":"HBD พ่อ","amount":902.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"600e7d57"},{"date":"2026-03-29","desc":"D.I.Y","amount":239.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"33329153"},{"date":"2026-03-30","desc":"Umi Shabu","amount":330.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"e997016a"},{"date":"2026-03-31","desc":"KFC","amount":457.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"843a7f87"},{"date":"2026-03-31","desc":"KFC","amount":396.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"744c0dec"},{"date":"2026-03-31","desc":"KFC โอนคืน","amount":260.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"c31aaa92"},{"date":"2026-03-31","desc":"Claude Ai","amount":1000.0,"type":"expense","comment":"","wallet":"main","paid":true,"id":"af205334"},{"date":"2026-04-01","desc":"ค่าพรบงวด 3 /10","amount":1470.0,"type":"expense","comment":"","wallet":"main","paid":true,"id":"21fbca4c"},{"date":"2026-04-01","desc":"AIS","amount":394.83,"type":"expense","comment":"","wallet":"main","paid":true,"id":"a5322e51"},{"date":"2026-04-01","desc":"AIS Fiber","amount":535.0,"type":"expense","comment":"","wallet":"main","paid":true,"id":"36461a8a"},{"date":"2026-04-01","desc":"BTC DCA","amount":500.0,"type":"expense","comment":"","wallet":"main","paid":true,"id":"b7bd1061"},{"date":"2026-04-01","desc":"Sence cafe","amount":65.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"4643e549"},{"date":"2026-04-02","desc":"7-11","amount":200.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"e870beb7"},{"date":"2026-04-03","desc":"MANA MALA","amount":199.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"3baa1bc6"},{"date":"2026-04-03","desc":"A3","amount":50.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"7c3afdf3"},{"date":"2026-04-03","desc":"Vanila","amount":369.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"3a462c19"},{"date":"2026-04-03","desc":"RG Sky Graper","amount":772.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"61872101"},{"date":"2026-04-04","desc":"KFC","amount":243.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"0ecad055"},{"date":"2026-04-04","desc":"Line sticker","amount":260.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"dad5d99d"},{"date":"2026-04-06","desc":"Sterwberry Frappe","amount":99.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"b82164e1"},{"date":"2026-04-08","desc":"School Bright","amount":180.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"76694440"},{"date":"2026-04-08","desc":"7-11","amount":500.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"5535cbdf"},{"date":"2026-04-08","desc":"BIG C","amount":208.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"479342bf"},{"date":"2026-04-07","desc":"ครัวบ้านเเม่","amount":200.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"a6d00263"},{"date":"2026-04-07","desc":"หม่าล่า","amount":144.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"61443ff3"},{"date":"2026-04-08","desc":"ไอศครีม","amount":69.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"a38de927"},{"date":"2026-04-08","desc":"Mana Mala","amount":233.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"d8a26607"},{"date":"2026-04-09","desc":"7-11","amount":200.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"6600aee3"},{"date":"2026-04-09","desc":"สึบาเมะ","amount":1315.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"6eb84247"},{"date":"2026-04-09","desc":"","amount":390.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"da10f57a"},{"date":"2026-04-09","desc":"","amount":645.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"92db63b3"},{"date":"2026-04-10","desc":"School Bright","amount":100.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"07d442fb"},{"date":"2026-04-10","desc":"หมูกระทะ","amount":269.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"206cbdb3"},{"date":"2026-04-15","desc":"ค่าเที่ยว","amount":500.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"4378c28f"},{"date":"2026-04-15","desc":"เเว่นตา","amount":169.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"c2ab09d5"},{"date":"2026-04-15","desc":"ไซริงค์","amount":66.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"1adad488"},{"date":"2026-03-16","desc":"ตัดผม","amount":120.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"6ffd5913"}],"coverType":"preset","coverValue":"sakura"},"2026-05":{"id":"2026-05","year":2026,"month":4,"transactions":[{"date":"2026-04-28","desc":"Income","amount":20670.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"035149be"},{"date":"2026-04-28","desc":"Pocket","amount":61.91,"type":"income","comment":"","wallet":"second","paid":false,"id":"5fca1ecc"},{"date":"2026-04-28","desc":"Shopeepay","amount":5460.01,"type":"expense","comment":"","wallet":"main","paid":true,"id":"1269b380"},{"date":"2026-05-03","desc":"Income","amount":2633.87,"type":"income","comment":"","wallet":"second","paid":false,"id":"03c046d1"},{"date":"2026-04-28","desc":"Mana Mala","amount":279.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"a7863d4a"},{"date":"2026-05-03","desc":"Claude ai","amount":716.62,"type":"expense","comment":"","wallet":"second","paid":false,"id":"a07290ec"},{"date":"2026-04-29","desc":"จิตรเจริญ","amount":655.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"7ea98803"},{"date":"2026-05-06","desc":"The Coma","amount":308.79,"type":"expense","comment":"","wallet":"second","paid":false,"id":"800138a6"},{"date":"2026-04-29","desc":"เติมน้ำมัน","amount":500.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"f8e9cd34"},{"date":"2026-05-20","desc":"7-11","amount":200.0,"type":"expense","comment":"","wallet":"second","paid":false,"id":"0d8a85c6"},{"date":"2026-04-30","desc":"ค่าไฟฟ้า","amount":752.79,"type":"expense","comment":"","wallet":"main","paid":true,"id":"8062b895"},{"date":"2026-05-20","desc":"KFC","amount":215.0,"type":"expense","comment":"","wallet":"second","paid":false,"id":"49fb3b43"},{"date":"2026-04-30","desc":"7-11","amount":300.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"94d198aa"},{"date":"2026-05-22","desc":"A3","amount":70.0,"type":"expense","comment":"","wallet":"second","paid":false,"id":"0ba32c83"},{"date":"2026-04-30","desc":"KFC","amount":248.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"268dbb0b"},{"date":"2026-05-22","desc":"7-11","amount":500.0,"type":"expense","comment":"","wallet":"second","paid":false,"id":"3cffdc24"},{"date":"2026-04-30","desc":"จิตรเจริญ","amount":75.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"0c2aaf94"},{"date":"2026-05-23","desc":"Yoguruto","amount":235.0,"type":"expense","comment":"","wallet":"second","paid":false,"id":"535ef1c7"},{"date":"2026-04-30","desc":"จิตรเจริญ","amount":130.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"303a4a9d"},{"date":"2026-05-24","desc":"Yoguruto","amount":97.0,"type":"expense","comment":"","wallet":"second","paid":false,"id":"c791edae"},{"date":"2026-04-30","desc":"ค่า Claude ai","amount":2104.89,"type":"income","comment":"","wallet":"main","paid":false,"id":"88f4912f"},{"date":"2026-04-30","desc":"เเม่ช่วยค่าไฟ","amount":700.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"29ca86d4"},{"date":"2026-05-01","desc":"โอนให้เเพง คาเฟ่ Soul mate","amount":159.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"baea2947"},{"date":"2026-05-01","desc":"จิตรเจริญ","amount":270.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"9c423a3b"},{"date":"2026-05-01","desc":"Mana Mala","amount":275.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"a7012dfe"},{"date":"2026-05-01","desc":"ไพศาล","amount":475.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"ce3ed84f"},{"date":"2026-05-01","desc":"KFC","amount":133.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"00ee2532"},{"date":"2026-05-01","desc":"Big C","amount":337.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"8194022d"},{"date":"2026-05-01","desc":"พ.ร.บ 4 /10","amount":1470.0,"type":"expense","comment":"","wallet":"main","paid":true,"id":"fa6b8c18"},{"date":"2026-05-01","desc":"คืนเจ๊","amount":1000.0,"type":"expense","comment":"","wallet":"main","paid":true,"id":"847d04d8"},{"date":"2026-05-02","desc":"AIS","amount":394.83,"type":"expense","comment":"","wallet":"main","paid":true,"id":"b153f729"},{"date":"2026-05-02","desc":"AIS","amount":535.0,"type":"expense","comment":"","wallet":"main","paid":true,"id":"9e0257cc"},{"date":"2026-05-02","desc":"Funky Fired","amount":183.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"fa2737ab"},{"date":"2026-05-02","desc":"ข้าวหมูสามชั้นทอด","amount":114.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"1e66349a"},{"date":"2026-05-02","desc":"Turtle Chip","amount":207.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"52a36587"},{"date":"2026-05-03","desc":"Empitsu ramen","amount":342.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"994a6288"},{"date":"2026-05-03","desc":"SRA น้ำปั่น","amount":99.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"97f6333d"},{"date":"2026-05-03","desc":"DCA","amount":2633.87,"type":"expense","comment":"","wallet":"main","paid":false,"id":"a09d4f06"},{"date":"2026-05-03","desc":"FIve Star","amount":296.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"a5bd9e0b"},{"date":"2026-05-03","desc":"7-11","amount":500.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"5d685ba2"},{"date":"2026-05-05","desc":"Arm & hammer","amount":328.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"817f475f"},{"date":"2026-05-05","desc":"JEEP BD","amount":113.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"cd2b4f36"},{"date":"2026-05-05","desc":"KFC","amount":212.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"fb59f225"},{"date":"2026-05-06","desc":"ประกันสุขภาพ","amount":355.0,"type":"expense","comment":"","wallet":"main","paid":true,"id":"f62ad918"},{"date":"2026-05-06","desc":"ประกันสุขภาพ","amount":355.0,"type":"expense","comment":"","wallet":"main","paid":true,"id":"ba7ab440"},{"date":"2026-05-06","desc":"7-11","amount":300.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"01ed9f81"},{"date":"2026-05-06","desc":"Pizza","amount":195.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"6db50196"},{"date":"2026-05-06","desc":"เติมน้ำมัน","amount":500.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"cd8602c5"},{"date":"2026-05-06","desc":"7-11","amount":200.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"fde5c61d"},{"date":"2026-05-07","desc":"School Bright","amount":120.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"2a15c645"},{"date":"2026-05-07","desc":"7-11","amount":200.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"90c19613"},{"date":"2026-05-07","desc":"Shabushi Birthday","amount":570.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"17684722"},{"date":"2026-05-07","desc":"Ice-cream","amount":15.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"43b7a70f"},{"date":"2026-05-09","desc":"Youtube Premirem","amount":200.0,"type":"expense","comment":"","wallet":"main","paid":true,"id":"8195e0d1"},{"date":"2026-05-09","desc":"KFC","amount":264.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"4ce3944d"},{"date":"2026-05-10","desc":"Sundays foods","amount":100.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"e641e316"},{"date":"2026-05-11","desc":"School Bright","amount":300.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"02bcf2d8"},{"date":"2026-05-13","desc":"A3","amount":70.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"6b8ea95d"},{"date":"2026-05-13","desc":"7-11","amount":500.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"daa714d7"},{"date":"2026-05-13","desc":"Big C","amount":292.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"54272934"},{"date":"2026-05-14","desc":"Mana Mala","amount":270.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"4c8d9b79"},{"date":"2026-05-15","desc":"Barista house","amount":245.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"6d1a1c6e"},{"date":"2026-05-15","desc":"Secret","amount":103.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"95cd4fec"},{"date":"2026-05-16","desc":"Mala","amount":148.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"f636f562"},{"date":"2026-05-17","desc":"KFC","amount":226.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"b041f92a"},{"date":"2026-05-18","desc":"7-11","amount":200.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"b2c99457"},{"date":"2026-05-19","desc":"School Bright","amount":200.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"5e9975e3"},{"date":"2026-05-21","desc":"","amount":65.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"6bbce53a"}],"coverType":"preset","coverValue":"morning"},"2026-06":{"id":"2026-06","year":2026,"month":5,"transactions":[{"date":"2026-05-28","desc":"Income","amount":20670.0,"type":"income","comment":"","wallet":"main","paid":false,"id":"ac552dee"},{"date":"2026-05-28","desc":"Pocket","amount":61.91,"type":"income","comment":"","wallet":"second","paid":false,"id":"b01118dd"},{"date":"2026-05-28","desc":"B-Quick 1/10","amount":1080.0,"type":"expense","comment":"","wallet":"main","paid":false,"id":"ba6f3b5a"}],"coverType":"preset","coverValue":"peach"}};
-
-const I = {
-  plus:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
-  x:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>',
-  cal:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
-  list:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>',
-  left:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>',
-  chev:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>',
-  img:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.6-3.6a2 2 0 0 0-2.8 0L6 20"/></svg>',
-  wallet:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h15a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5"/><path d="M18 12a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>',
-  piggy:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2V5z"/><path d="M2 9v1c0 1.1.9 2 2 2h1"/></svg>',
-  trash:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
-  check:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>',
-  up:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M7 7h10v10"/></svg>',
-  down:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 7 17 17M17 7v10H7"/></svg>',
-  book:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
-  tup:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/></svg>',
-  tdn:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 17 13.5 8.5 8.5 13.5 2 7"/><path d="M16 17h6v-6"/></svg>',
-  exp:'<svg class="svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>',
+/* =========================================================
+   CONFIG — เก็บใน localStorage บนเครื่องผู้ใช้
+   ========================================================= */
+const SHEET_NAMES = {
+  1:'JAN 2026',2:'FEB 2026',3:'MAR 2026',4:'APR 2026',
+  5:'MAY 2026',6:'JUNE 2026',7:'JUL 2026',8:'AUG 2026',
+  9:'SEP 2026',10:'OCT 2026',11:'NOV 2026',12:'DEC 2026'
 };
 
-const TM=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
-const TMS=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
-const DOW=['อา','จ','อ','พ','พฤ','ศ','ส'];
-const WALLETS={main:{name:'ใบหลัก',icon:I.wallet},second:{name:'ใบรอง',icon:I.piggy}};
-const COVERS=[
- {id:'sunset',name:'พระอาทิตย์ตก',css:'linear-gradient(135deg,#ff9a56,#ff6a88 55%,#c44569)'},
- {id:'morning',name:'ทะเลเช้า',css:'linear-gradient(135deg,#a1c4fd,#62b8e0 50%,#3a7bd5)'},
- {id:'forest',name:'ป่าหมอก',css:'linear-gradient(135deg,#8fd3a4,#3a936c)'},
- {id:'lavender',name:'ลาเวนเดอร์',css:'linear-gradient(135deg,#d4a5ec,#9b6dd6)'},
- {id:'peach',name:'พีชนุ่ม',css:'linear-gradient(135deg,#ffd3a5,#fd9d7e)'},
- {id:'night',name:'ราตรี',css:'linear-gradient(135deg,#2b3a67,#4a5d8f 60%,#1a1f3a)'},
- {id:'mint',name:'มินต์',css:'linear-gradient(135deg,#b8f2e6,#5ec4b0)'},
- {id:'vintage',name:'วินเทจ',css:'linear-gradient(135deg,#d2b48c,#a67c52)'},
- {id:'sakura',name:'ซากุระ',css:'linear-gradient(135deg,#ffd9e8,#ff9ec7 60%,#e87ea8)'},
- {id:'ocean',name:'ทะเลลึก',css:'linear-gradient(135deg,#2193b0,#0f5e6e)'},
-];
-
-const mem={};
-const store={
-  async get(k){try{if(window.storage){const r=await window.storage.get(k,false);return r?JSON.parse(r.value):null;}}catch(e){}return k in mem?mem[k]:null;},
-  async set(k,v){mem[k]=v;try{if(window.storage)await window.storage.set(k,JSON.stringify(v),false);}catch(e){}},
-  async del(k){delete mem[k];try{if(window.storage)await window.storage.delete(k,false);}catch(e){}},
-};
-
-const uid=()=>Math.random().toString(36).slice(2,10);
-const esc=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const THB=n=>'฿'+(Number(n)||0).toLocaleString('th-TH',{minimumFractionDigits:0,maximumFractionDigits:2});
-const mid=(y,m)=>y+'-'+String(m+1).padStart(2,'0');
-const todayISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
-const coverCss=m=>{if(m.coverType==='image'&&m.coverValue)return `background-image:url('${m.coverValue}');background-size:cover;background-position:center;`;const c=COVERS.find(x=>x.id===m.coverValue)||COVERS[0];return `background-image:${c.css};`;};
-const coverDot=m=>m.coverType==='image'&&m.coverValue?`url('${m.coverValue}')`:(COVERS.find(x=>x.id===m.coverValue)||COVERS[0]).css;
-function summarize(txs,w){let i=0,e=0;for(const t of txs){if(t.wallet!==w)continue;if(t.type==='income')i+=t.amount;else e+=t.amount;}return{income:i,expense:e,balance:i-e};}
-function fmtDay(iso){const[y,m,d]=iso.split('-').map(Number);const dow=DOW[new Date(y,m-1,d).getDay()];return `${dow}. ${d} ${TMS[m-1]}`;}
-function isoOf(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-/* budget cycle: salary on the 28th -> month M covers (M-1)/28 .. M/27 */
-function cycleRange(m){return {start:new Date(m.year,m.month-1,28),end:new Date(m.year,m.month,27)};}
-
-const S={view:'shelf',openId:null,monthView:'calendar',wallet:'main',dd:false,order:[],months:{}};
-
-async function boot(){
-  let meta=await store.get('fd2:meta');
-  if(!meta){
-    const ids=Object.keys(SEED).sort((a,b)=>a<b?1:-1);
-    for(const id of ids) await store.set('fd2:month:'+id,SEED[id]);
-    meta={v:2,order:ids};await store.set('fd2:meta',meta);
-  }
-  for(const id of meta.order){const m=await store.get('fd2:month:'+id);if(m)S.months[id]=m;}
-  S.order=meta.order.filter(id=>S.months[id]);
-  render();
-}
-async function saveMonth(m){S.months[m.id]=m;await store.set('fd2:month:'+m.id,m);}
-async function saveMeta(){await store.set('fd2:meta',{v:2,order:S.order});}
-
-const app=()=>document.getElementById('app');
-const mroot=()=>document.getElementById('modal-root');
-function render(){
-  if(S.view==='month'&&S.months[S.openId]) renderMonth(S.months[S.openId]);
-  else renderShelf();
-}
-
-function ddItems(){
-  return S.order.map(id=>{const m=S.months[id];const s=summarize(m.transactions,'main');
-    return `<button class="dd-item" data-act="open" data-id="${id}">
-      <span class="dd-dot" style="background-image:${coverDot(m)}"></span>
-      <span class="dd-name"><b>${TM[m.month]}</b> ${m.year+543}<br><span class="muted" style="font-size:.78rem">คงเหลือ ${THB(s.balance)}</span></span>
-    </button>`;}).join('')
-    +`<button class="dd-create" data-act="create">${I.plus} สร้างเดือนใหม่</button>`;
-}
-
-function renderShelf(){
-  const latest=S.order[0]?S.months[S.order[0]]:null;
-  const s=latest?summarize(latest.transactions,'main'):null;
-  app().innerHTML=`<div class="wrap fade-in" style="padding-top:34px">
-    <div class="brand">${I.book}<span>Money Diary</span></div>
-    <h1 class="title-xl">สมุดบันทึก<br>รายรับรายจ่าย</h1>
-    <p class="sub">เลือกเดือนเพื่อเปิดดู หรือสร้างเดือนใหม่</p>
-    ${latest?`<button class="hero diary-shadow" data-act="open" data-id="${latest.id}">
-      <div style="position:absolute;inset:0;${coverCss(latest)}"></div><div class="ov"></div>
-      <div class="ct">
-        <div><div class="hand" style="opacity:.9;font-size:.85rem">เดือนล่าสุด · ปี ${latest.year+543}</div>
-        <div class="disp" style="font-size:2rem;line-height:1.05">${TM[latest.month]}</div></div>
-        <div><div style="font-size:.72rem;opacity:.85">คงเหลือใบหลัก</div>
-        <div class="disp" style="font-size:1.35rem;font-weight:600">${THB(s.balance)}</div></div>
-      </div></button>`:''}
-    <span class="lbl">เลือกเดือน</span>
-    <div class="dd">
-      <button class="dd-btn ${S.dd?'open':''}" data-act="dd-toggle"><span>เปิดสมุดเดือนที่ต้องการ…</span><span class="chev">${I.chev}</span></button>
-      ${S.dd?`<div class="dd-panel pop">${ddItems()}</div>`:''}
-    </div>
-    <p class="center muted" style="font-size:.76rem;margin-top:34px">ข้อมูลถูกบันทึกในแอปนี้อัตโนมัติ · นำเข้าจริง ม.ค.–มิ.ย. 2569</p>
-  </div>`;
-}
-
-function renderMonth(m){
-  const txs=m.transactions.filter(t=>t.wallet===S.wallet);
-  const s=summarize(m.transactions,S.wallet);
-  const body=S.monthView==='calendar'?calHTML(m,txs):listHTML(txs);
-  app().innerHTML=`<div class="fade-in">
-    <div class="cover"><div style="position:absolute;inset:0;${coverCss(m)}"></div><div class="ov"></div>
-      <div class="ct">
-        <div class="toprow">
-          <button class="pill" data-act="back">${I.left}<span>ชั้นวาง</span></button>
-          <div style="display:flex;gap:7px">
-            <button class="pill" data-act="sheet">${I.exp}<span>ชีท</span></button>
-            <button class="pill" data-act="cover">${I.img}<span>ปก</span></button>
-          </div>
-        </div>
-        <button data-act="switch" style="text-align:left;color:#fff">
-          <div class="hand" style="opacity:.9">ปี ${m.year+543}</div>
-          <h1>${TM[m.month]} ${I.chev}</h1>
-        </button>
-      </div>
-    </div>
-    <div class="wrap panel">
-      <div class="card diary-shadow pop" style="padding:18px">
-        <div style="display:flex;gap:8px;margin-bottom:14px">
-          ${['main','second'].map(w=>`<button class="chip ${S.wallet===w?'on':''}" data-act="wallet" data-w="${w}">${WALLETS[w].icon}${WALLETS[w].name}</button>`).join('')}
-        </div>
-        <div class="sum-bal"><span class="muted" style="font-size:.78rem">คงเหลือ${WALLETS[S.wallet].name}</span><b style="color:${s.balance<0?'var(--red)':'var(--ink)'}">${THB(s.balance)}</b></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
-          <div class="stat"><div class="lb">${I.tup}รายรับ</div><div class="vl" style="color:var(--green)">${THB(s.income)}</div></div>
-          <div class="stat"><div class="lb">${I.tdn}รายจ่าย</div><div class="vl" style="color:var(--red)">${THB(s.expense)}</div></div>
-        </div>
-      </div>
-      <div class="toolbar">
-        <div class="seg">
-          <button class="${S.monthView==='calendar'?'on':''}" data-act="view" data-v="calendar">${I.cal}ปฏิทิน</button>
-          <button class="${S.monthView==='list'?'on':''}" data-act="view" data-v="list">${I.list}รายการ</button>
-        </div>
-        <button class="btn-accent soft-shadow" data-act="add" style="padding:10px 16px;font-size:.9rem">${I.plus}เพิ่มรายการ</button>
-      </div>
-      ${body}
-      <div class="center" style="margin-top:28px"><button class="muted" data-act="delmonth" style="font-size:.78rem;display:inline-flex;align-items:center;gap:5px">${I.trash} ลบสมุดเดือนนี้</button></div>
-    </div>
-  </div>`;
-}
-
-function calHTML(m,txs){
-  const {start,end}=cycleRange(m);
-  const startIso=isoOf(start), endIso=isoOf(end);
-  const byIso={};let outOf=[];
-  txs.forEach(t=>{if(t.date>=startIso&&t.date<=endIso){(byIso[t.date]=byIso[t.date]||{i:0,e:0})[t.type==='income'?'i':'e']+=t.amount;}else outOf.push(t);});
-  // build the list of dates in the cycle
-  const days=[];let cur=new Date(start);while(cur<=end){days.push(new Date(cur));cur.setDate(cur.getDate()+1);}
-  let cells='';for(let i=0;i<start.getDay();i++)cells+='<div></div>';
-  days.forEach(d=>{
-    const iso=isoOf(d);const info=byIso[iso];const today=iso===todayISO();const dn=d.getDate();
-    const mark=dn===1?`<span style="font-size:.55rem;color:var(--accent);font-weight:600">${TMS[d.getMonth()]}</span>`:'';
-    cells+=`<button class="cell ${info?'has':''} ${today?'today':''}" data-act="day" data-date="${iso}">
-      <span class="dn" style="color:${today?'var(--accent)':'var(--ink)'};font-weight:${today?700:500}">${dn}${mark}</span>
-      ${info?`<span class="am">${info.e?`<span style="color:var(--red)">-${Math.round(info.e).toLocaleString()}</span><br>`:''}${info.i?`<span style="color:var(--green)">+${Math.round(info.i).toLocaleString()}</span>`:''}</span>`:''}
-    </button>`;
-  });
-  const rangeLbl=`รอบ 28 ${TMS[start.getMonth()]} ${start.getFullYear()+543} – 27 ${TMS[end.getMonth()]} ${end.getFullYear()+543}`;
-  let outHTML='';
-  if(outOf.length){outHTML=`<div style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)">
-    <div class="hand muted" style="font-size:.8rem;margin-bottom:8px">รายการนอกรอบ</div>
-    ${outOf.sort((a,b)=>a.date<b.date?-1:1).map(t=>`<button class="row" style="width:100%;background:var(--paper);border-radius:10px;border:none;margin-bottom:6px;padding:9px 13px" data-act="day" data-date="${t.date}">
-      <span style="flex:1;text-align:left">${fmtDay(t.date)} · ${esc(t.desc)||'—'}</span>
-      <span style="color:${t.type==='income'?'var(--green)':'var(--red)'}">${t.type==='income'?'+':'-'}${THB(t.amount)}</span></button>`).join('')}</div>`;}
-  return `<div class="card soft-shadow pop" style="padding:11px">
-    <div class="hand muted center" style="font-size:.78rem;margin-bottom:8px">${rangeLbl}</div>
-    <div class="cal-dow">${DOW.map((d,i)=>`<div style="color:${i===0?'var(--red)':'var(--ink-soft)'}">${d}</div>`).join('')}</div>
-    <div class="cal-grid">${cells}</div>${outHTML}</div>`;
-}
-
-function listHTML(txs){
-  if(!txs.length)return `<div class="card pop center muted" style="padding:40px 20px">ยังไม่มีรายการ · กด “เพิ่มรายการ” เพื่อเริ่มบันทึก</div>`;
-  const g={};[...txs].sort((a,b)=>a.date<b.date?1:-1).forEach(t=>(g[t.date]=g[t.date]||[]).push(t));
-  return '<div class="pop" style="display:flex;flex-direction:column;gap:12px">'+Object.keys(g).sort((a,b)=>a<b?1:-1).map(date=>`
-    <div class="daygrp soft-shadow"><div class="dayhd">${fmtDay(date)}</div>
-      ${g[date].map(t=>`<div class="row">
-        <div class="ic" style="background:${t.type==='income'?'rgba(91,140,90,.12)':'rgba(194,91,84,.12)'};color:${t.type==='income'?'var(--green)':'var(--red)'}">${t.type==='income'?I.up:I.down}</div>
-        <button style="flex:1;text-align:left;min-width:0" data-act="edit" data-id="${t.id}">
-          <div style="font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(t.desc)||'—'}</div>${t.comment?`<div class="muted" style="font-size:.78rem">${esc(t.comment)}</div>`:''}</button>
-        <button class="check ${t.paid?'on':''}" data-act="toggle" data-id="${t.id}">${t.paid?I.check:''}</button>
-        <div style="text-align:right;min-width:72px"><span class="disp" style="font-weight:600;color:${t.type==='income'?'var(--green)':'var(--ink)'}">${t.type==='income'?'+':'-'}${THB(t.amount)}</span></div>
-      </div>`).join('')}</div>`).join('')+'</div>';
-}
-
-/* modals */
-function openModal(html){mroot().innerHTML=`<div class="overlay">${html}</div>`;}
-function closeModal(){mroot().innerHTML='';}
-
-function monthPickerModal(){
-  openModal(`<div class="modal pop" style="max-width:420px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h3>เลือกเดือน</h3><button data-act="closem">${I.x}</button></div>
-    <div style="border:1px solid var(--line);border-radius:14px;overflow:hidden">${ddItems()}</div>
-  </div>`);
-}
-function txModal(tx){
-  const isNew=!!tx._new;
-  openModal(`<div class="modal pop" style="max-width:430px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>${isNew?'เพิ่มรายการ':'แก้ไขรายการ'}</h3><button data-act="closem">${I.x}</button></div>
-    <div style="display:flex;gap:8px;margin-bottom:14px">
-      <button class="seg-type" data-type="expense" style="flex:1;border-radius:12px;padding:12px;background:${tx.type==='expense'?'var(--red)':'var(--paper)'};color:${tx.type==='expense'?'#fff':'var(--ink-soft)'}">รายจ่าย</button>
-      <button class="seg-type" data-type="income" style="flex:1;border-radius:12px;padding:12px;background:${tx.type==='income'?'var(--green)':'var(--paper)'};color:${tx.type==='income'?'#fff':'var(--ink-soft)'}">รายรับ</button>
-    </div>
-    <label class="field"><span>รายการ</span><input class="inp" id="f-desc" value="${esc(tx.desc)}" placeholder="เช่น 7-11, KFC, ค่าไฟ"></label>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <label class="field"><span>จำนวนเงิน (฿)</span><input class="inp disp" id="f-amt" inputmode="decimal" value="${tx.amount||''}" placeholder="0" style="font-weight:600"></label>
-      <label class="field"><span>วันที่</span><input class="inp" type="date" id="f-date" value="${tx.date}"></label>
-    </div>
-    <label class="field"><span>กระเป๋า</span>
-      <select class="inp" id="f-wallet"><option value="main" ${tx.wallet==='main'?'selected':''}>ใบหลัก</option><option value="second" ${tx.wallet==='second'?'selected':''}>ใบรอง</option></select></label>
-    <label class="field"><span>หมายเหตุ (ไม่บังคับ)</span><input class="inp" id="f-comment" value="${esc(tx.comment)}"></label>
-    <label style="display:flex;align-items:center;gap:8px;margin-bottom:18px;cursor:pointer" id="f-paid-row">
-      <span class="check ${tx.paid?'on':''}" id="f-paid">${tx.paid?I.check:''}</span><span class="muted" style="font-size:.88rem">จ่ายแล้ว / ทำรายการแล้ว</span></label>
-    <div style="display:flex;gap:8px">
-      ${isNew?'':`<button data-act="deltx" data-id="${tx.id}" style="border-radius:12px;padding:0 16px;background:var(--paper);color:var(--red)">${I.trash}</button>`}
-      <button class="btn-accent" id="f-save" style="flex:1;padding:14px">บันทึก</button>
-    </div>
-  </div>`);
-  const o={...tx};
-  mroot().querySelectorAll('.seg-type').forEach(b=>b.onclick=()=>{o.type=b.dataset.type;txModal(o);});
-  document.getElementById('f-paid-row').onclick=()=>{o.paid=!o.paid;const el=document.getElementById('f-paid');el.classList.toggle('on',o.paid);el.innerHTML=o.paid?I.check:'';};
-  document.getElementById('f-save').onclick=()=>{
-    const desc=document.getElementById('f-desc').value.trim();
-    const amt=parseFloat(document.getElementById('f-amt').value.replace(/[^\d.]/g,''));
-    if(!desc||!(amt>0)){toast('กรอกชื่อรายการและจำนวนเงิน');return;}
-    upsertTx({id:o.id,desc,amount:Math.round(amt*100)/100,type:o.type,date:document.getElementById('f-date').value,wallet:document.getElementById('f-wallet').value,comment:document.getElementById('f-comment').value.trim(),paid:o.paid});
+function getCfg(){
+  return {
+    apiKey: localStorage.getItem('pn_apikey')||'',
+    sheetId: localStorage.getItem('pn_sheetid')||'16MsjlIK4YJxNWj_CDr9ta3Wm4bzbaDBi5Izrzs3t6Z8'
   };
 }
-function dayModal(date){
-  const m=S.months[S.openId];const txs=m.transactions.filter(t=>t.wallet===S.wallet&&t.date===date);
-  let i=0,e=0;txs.forEach(t=>t.type==='income'?i+=t.amount:e+=t.amount);
-  openModal(`<div class="modal pop" style="max-width:430px">
-    <div style="display:flex;justify-content:space-between;align-items:center"><h3>${fmtDay(date)}</h3><button data-act="closem">${I.x}</button></div>
-    <div style="display:flex;gap:16px;margin:6px 0 14px;font-size:.9rem">${e?`<span style="color:var(--red)">จ่าย ${THB(e)}</span>`:''}${i?`<span style="color:var(--green)">รับ ${THB(i)}</span>`:''}</div>
-    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
-      ${txs.length?txs.map(t=>`<button class="row" style="width:100%;background:var(--paper);border-radius:12px;border:none;padding:11px 13px" data-act="edit" data-id="${t.id}">
-        <span style="flex:1;text-align:left">${esc(t.desc)||'—'}</span>
-        <span class="disp" style="font-weight:600;color:${t.type==='income'?'var(--green)':'var(--ink)'}">${t.type==='income'?'+':'-'}${THB(t.amount)}</span></button>`).join(''):'<div class="center muted" style="padding:24px">ยังไม่มีรายการในวันนี้</div>'}
-    </div>
-    <button class="btn-accent" data-act="addday" data-date="${date}" style="width:100%;padding:14px">${I.plus}เพิ่มรายการวันนี้</button>
-  </div>`);
+function saveConfig(){
+  const k=document.getElementById('cfgApiKey').value.trim();
+  const s=document.getElementById('cfgSheetId').value.trim();
+  if(!k){showToast('ใส่ API Key ด้วยนะ');return;}
+  localStorage.setItem('pn_apikey',k);
+  localStorage.setItem('pn_sheetid',s);
+  document.getElementById('cfgModal').classList.remove('open');
+  loadMonth();
 }
-function coverModal(){
-  const m=S.months[S.openId];
-  openModal(`<div class="modal pop" style="max-width:480px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>ภาพปก</h3><button data-act="closem">${I.x}</button></div>
-    <div class="muted" style="font-size:.78rem;margin-bottom:8px">เลือกธีมสำเร็จรูป</div>
-    <div class="cov-grid" style="margin-bottom:18px">
-      ${COVERS.map(c=>`<button class="cov ${m.coverType==='preset'&&m.coverValue===c.id?'on':''}" data-act="setcover" data-type="preset" data-val="${c.id}" style="background-image:${c.css}" title="${c.name}"></button>`).join('')}
-    </div>
-    <div style="background:var(--paper);border-radius:12px;padding:13px">
-      <div class="muted" style="font-size:.78rem;margin-bottom:8px">ใส่ลิงก์รูปภาพเอง (จะถูกบันทึกไว้ในช่อง L1 ของชีทเมื่อส่งออก)</div>
-      <div style="display:flex;gap:8px">
-        <input class="inp" id="cov-url" placeholder="https://..." value="${m.coverType==='image'?esc(m.coverValue):''}">
-        <button class="btn-accent" id="cov-url-btn" style="padding:0 18px">ใช้</button>
-      </div>
-    </div>
-  </div>`);
-  document.getElementById('cov-url-btn').onclick=()=>{const u=document.getElementById('cov-url').value.trim();if(u)setCover('image',u);else toast('วางลิงก์รูปก่อนนะครับ');};
+function openConfig(){
+  const c=getCfg();
+  document.getElementById('cfgApiKey').value=c.apiKey;
+  document.getElementById('cfgSheetId').value=c.sheetId;
+  document.getElementById('cfgModal').classList.add('open');
 }
-function createModal(){
-  const now=new Date();let y=now.getFullYear(),mo=now.getMonth(),cov=COVERS[Math.floor(Math.random()*COVERS.length)].id,carry=true;
-  function draw(){
-    const dup=S.order.includes(mid(y,mo));
-    openModal(`<div class="modal pop" style="max-width:430px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>สร้างเดือนใหม่</h3><button data-act="closem">${I.x}</button></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-        <label class="field"><span>เดือน</span><select class="inp" id="c-mon">${TM.map((mm,i)=>`<option value="${i}" ${i===mo?'selected':''}>${mm}</option>`).join('')}</select></label>
-        <label class="field"><span>ปี (พ.ศ.)</span><select class="inp" id="c-year">${[now.getFullYear()-1,now.getFullYear(),now.getFullYear()+1].map(yy=>`<option value="${yy}" ${yy===y?'selected':''}>${yy+543}</option>`).join('')}</select></label>
-      </div>
-      <div class="field"><span>ปก</span><div class="cov-grid">${COVERS.map(c=>`<button class="cov ${cov===c.id?'on':''}" data-cov="${c.id}" style="background-image:${c.css}"></button>`).join('')}</div></div>
-      <label style="display:flex;align-items:center;gap:8px;margin:6px 0 16px;cursor:pointer" id="c-carry-row">
-        <span class="check ${carry?'on':''}" style="border-radius:6px" id="c-carry">${carry?I.check:''}</span>
-        <span class="muted" style="font-size:.84rem">คัดลอกรายจ่ายประจำจากเดือนล่าสุด (AIS, ค่าไฟ, ประกัน…)</span></label>
-      ${dup?'<div style="color:var(--red);font-size:.78rem;margin-bottom:10px">มีสมุดเดือนนี้อยู่แล้ว — กดเพื่อเปิดดู</div>':''}
-      <button class="btn-accent" id="c-go" style="width:100%;padding:14px">${dup?'เปิดสมุดเดือนนี้':'สร้างสมุด'}</button>
-    </div>`);
-    document.getElementById('c-mon').onchange=e=>{mo=+e.target.value;draw();};
-    document.getElementById('c-year').onchange=e=>{y=+e.target.value;draw();};
-    mroot().querySelectorAll('[data-cov]').forEach(b=>b.onclick=()=>{cov=b.dataset.cov;draw();});
-    document.getElementById('c-carry-row').onclick=()=>{carry=!carry;draw();};
-    document.getElementById('c-go').onclick=()=>createMonth(y,mo,cov,carry);
+
+/* =========================================================
+   GOOGLE SHEETS API v4 HELPERS
+   ========================================================= */
+const BASE = 'https://sheets.googleapis.com/v4/spreadsheets';
+
+async function sheetGet(range){
+  const {apiKey,sheetId}=getCfg();
+  const enc=encodeURIComponent(range);
+  const r=await fetch(`${BASE}/${sheetId}/values/${enc}?key=${apiKey}`);
+  if(!r.ok) throw new Error(`Sheets API error ${r.status}: ${await r.text()}`);
+  const d=await r.json();
+  return d.values||[];
+}
+
+async function sheetAppend(sheetName, rowValues){
+  const {apiKey,sheetId}=getCfg();
+  const range=encodeURIComponent(sheetName+'!A:E');
+  const r=await fetch(
+    `${BASE}/${sheetId}/values/${range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS&key=${apiKey}`,
+    {method:'POST',headers:{'Content-Type':'application/json'},
+     body:JSON.stringify({values:[rowValues]})}
+  );
+  if(!r.ok) throw new Error(`Append error ${r.status}: ${await r.text()}`);
+  return await r.json();
+}
+
+async function sheetUpdate(sheetName, rowIndex, colStart, colEnd, rowValues){
+  const {apiKey,sheetId}=getCfg();
+  const col1=String.fromCharCode(64+colStart), col2=String.fromCharCode(64+colEnd);
+  const range=encodeURIComponent(`${sheetName}!${col1}${rowIndex}:${col2}${rowIndex}`);
+  const r=await fetch(
+    `${BASE}/${sheetId}/values/${range}?valueInputOption=USER_ENTERED&key=${apiKey}`,
+    {method:'PUT',headers:{'Content-Type':'application/json'},
+     body:JSON.stringify({values:[rowValues]})}
+  );
+  if(!r.ok) throw new Error(`Update error ${r.status}: ${await r.text()}`);
+  return await r.json();
+}
+
+async function sheetClear(sheetName, rowIndex, colStart, colEnd){
+  const {apiKey,sheetId}=getCfg();
+  const col1=String.fromCharCode(64+colStart), col2=String.fromCharCode(64+colEnd);
+  const range=encodeURIComponent(`${sheetName}!${col1}${rowIndex}:${col2}${rowIndex}`);
+  const r=await fetch(
+    `${BASE}/${sheetId}/values/${range}:clear?key=${apiKey}`,
+    {method:'POST',headers:{'Content-Type':'application/json'}}
+  );
+  if(!r.ok) throw new Error(`Clear error ${r.status}: ${await r.text()}`);
+}
+
+/* =========================================================
+   DATA PARSING
+   ========================================================= */
+function parseAmt(v){return parseFloat(String(v||'').replace(/[฿,\s]/g,''))||0;}
+function parseDateVal(v){
+  if(!v) return '';
+  // could be "28/5/26" or "28/05/2026" etc.
+  return String(v);
+}
+
+function readWalletFromRows(rows, dateCol, listCol, balCol, cmtCol, paidCol, walletLabel){
+  const out=[];
+  for(let i=1;i<rows.length;i++){
+    const row=rows[i]||[];
+    const dateVal=row[dateCol];
+    if(!dateVal||String(dateVal).trim()==='') continue;
+    const amount=parseAmt(row[listCol]);
+    const balance=parseAmt(row[balCol]);
+    const comment=row[cmtCol]?String(row[cmtCol]):'';
+    const paid=String(row[paidCol]||'').toUpperCase()==='TRUE';
+    if(amount!==0) out.push({date:String(dateVal),amount,balance,comment,paid,wallet:walletLabel,row:i+1});
   }
-  draw();
+  return out;
 }
-function sheetModal(tab){
-  tab=tab||'import';const m=S.months[S.openId];const tsv=buildTSV(m);
-  const tabBtn=(id,lbl)=>`<button class="seg-tab" data-tab="${id}" style="flex:1;border-radius:10px;padding:9px;font-size:.9rem;background:${tab===id?'var(--accent)':'transparent'};color:${tab===id?'#fff':'var(--ink-soft)'}">${lbl}</button>`;
-  let bodyHtml;
-  if(tab==='import'){
-    bodyHtml=`<p class="muted" style="font-size:.84rem;margin:12px 0">ใน Google Sheet เปิดแท็บเดือนนี้ → เลือกทั้งหมด (Ctrl/⌘+A) → คัดลอก → วางในช่องนี้ แล้วกดนำเข้า แอปจะอัปเดตตามชีททันที</p>
-      <textarea class="inp" id="imp-area" style="height:170px;font-family:monospace;font-size:.72rem" placeholder="วางข้อมูลที่คัดลอกจากชีทตรงนี้…"></textarea>
-      <button class="btn-accent" id="imp-go" style="width:100%;padding:14px;margin-top:12px">นำเข้าทับ ${TM[m.month]} ${m.year+543}</button>`;
-  }else{
-    bodyHtml=`<p class="muted" style="font-size:.84rem;margin:12px 0">รูปแบบตรงกับชีท (ใบหลักซ้าย / ใบรองขวา · ลิงก์ปกในช่อง L1) — คัดลอกแล้ววางที่เซลล์ A1 ของแท็บเดือนนั้น</p>
-      <textarea class="inp" id="exp-area" style="height:170px;font-family:monospace;font-size:.7rem;white-space:pre" readonly>${esc(tsv)}</textarea>
-      <div style="display:flex;gap:8px;margin-top:12px">
-        <button class="btn-accent" id="exp-copy" style="flex:1;padding:13px">คัดลอกไปวางในชีท</button>
-        <button id="exp-dl" style="border-radius:12px;padding:13px 16px;background:var(--paper);color:var(--ink)">โหลด CSV</button>
-      </div>`;
+
+/* =========================================================
+   GET MONTH DATA
+   ========================================================= */
+async function getMonthData(month){
+  const sheetName=SHEET_NAMES[month];
+  // fetch full sheet
+  const rows=await sheetGet(sheetName+'!A:L');
+  // col indices: A=0 B=1 C=2 D=3 E=4 | G=6 H=7 I=8 J=9 K=10 | L=11
+  const w1=readWalletFromRows(rows,0,1,2,3,4,'main');
+  const w2=readWalletFromRows(rows,6,7,8,9,10,'pocket');
+  const coverUrl=(rows[0]&&rows[0][11])?String(rows[0][11]):'';
+  return {wallet1:w1, wallet2:w2, coverUrl, sheetName};
+}
+
+/* =========================================================
+   ADD TRANSACTION
+   ========================================================= */
+async function addTransactionAPI(month, wallet, dateStr, amount, comment, isIncome){
+  const sheetName=SHEET_NAMES[month];
+  const rows=await sheetGet(sheetName+'!A:K');
+  const isMain=wallet==='main';
+  const balCol=isMain?2:8;
+  // find last balance
+  let lastBal=0;
+  for(let i=rows.length-1;i>=1;i--){
+    const b=parseAmt((rows[i]||[])[balCol]);
+    if(b!==0){lastBal=b;break;}
   }
-  openModal(`<div class="modal pop" style="max-width:560px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><h3 style="font-size:1.2rem">ซิงก์กับชีท</h3><button data-act="closem">${I.x}</button></div>
-    <div style="display:flex;gap:6px;background:var(--paper);border-radius:12px;padding:4px">${tabBtn('import','นำเข้าจากชีท')}${tabBtn('export','ส่งออกไปชีท')}</div>
-    ${bodyHtml}</div>`);
-  mroot().querySelectorAll('.seg-tab').forEach(b=>b.onclick=()=>sheetModal(b.dataset.tab));
-  if(tab==='import'){
-    document.getElementById('imp-go').onclick=()=>{
-      const txt=document.getElementById('imp-area').value;
-      if(!txt.trim()){toast('วางข้อมูลจากชีทก่อนนะครับ');return;}
-      const r=parseClip(txt,m.id);
-      if(!r.txs.length){toast('ไม่พบรายการ — ลองคัดลอกทั้งแท็บอีกครั้ง');return;}
-      confirmImport(m,r);
-    };
-  }else{
-    document.getElementById('exp-copy').onclick=async()=>{
-      try{await navigator.clipboard.writeText(tsv);toast('คัดลอกแล้ว — วางในชีทได้เลย');}
-      catch(e){const a=document.getElementById('exp-area');a.focus();a.select();document.execCommand('copy');toast('คัดลอกแล้ว');}
-    };
-    document.getElementById('exp-dl').onclick=()=>{
-      const csv=buildCSV(m);const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
-      const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`money-${m.id}.csv`;a.click();toast('ดาวน์โหลดแล้ว');
-    };
-  }
-}
-function confirmImport(m,r){
-  const cur=m.transactions.length;
-  openModal(`<div class="modal pop center" style="max-width:360px">
-    <h3 style="margin-bottom:8px">นำเข้าข้อมูล?</h3>
-    <p class="muted" style="font-size:.88rem;margin-bottom:18px">พบ <b>${r.txs.length}</b> รายการจากชีท จะแทนที่ ${cur} รายการเดิมของ ${TM[m.month]} ${m.year+543}${r.cover?'<br>+ อัปเดตภาพปกจากช่อง L1':''}</p>
-    <div style="display:flex;gap:8px"><button style="flex:1;border-radius:12px;padding:13px;background:var(--paper)" data-act="closem">ยกเลิก</button>
-    <button class="btn-accent" id="imp-confirm" style="flex:1;padding:13px">นำเข้า</button></div></div>`);
-  document.getElementById('imp-confirm').onclick=async()=>{
-    const upd={...m,transactions:r.txs};
-    if(r.cover){upd.coverType='image';upd.coverValue=r.cover;}
-    await saveMonth(upd);closeModal();render();toast('นำเข้าสำเร็จ '+r.txs.length+' รายการ');
-  };
-}
-/* ----- sheet parser (mirror of export layout & balance-delta logic) ----- */
-function pnum(s){if(s==null)return null;s=String(s).replace(/฿/g,'').replace(/,/g,'').replace(/\s/g,'').trim();if(s==='')return null;const v=parseFloat(s);return isNaN(v)?null:v;}
-function isDateStr(s){return /^\s*\d{1,2}\/\d{1,2}\/\d{2}\s*$/.test(s||'');}
-function parseD(s,fallback){if(!isDateStr(s))return fallback;const p=s.trim().split('/').map(Number);return (2000+p[2])+'-'+String(p[1]).padStart(2,'0')+'-'+String(p[0]).padStart(2,'0');}
-function csvSplit(line){const out=[];let cur='',q=false;for(let i=0;i<line.length;i++){const c=line[i];if(q){if(c==='"'){if(line[i+1]==='"'){cur+='"';i++;}else q=false;}else cur+=c;}else{if(c==='"')q=true;else if(c===','){out.push(cur);cur='';}else cur+=c;}}out.push(cur);return out;}
-function parseClip(text,monthId){
-  text=text.replace(/\r/g,'');const useTab=text.indexOf('\t')>=0;
-  const rows=text.split('\n').map(l=>useTab?l.split('\t'):csvSplit(l));
-  const txs=[];let cover='';
-  let lastMain=monthId+'-01',lastSec=monthId+'-01',prevMain=null,prevSec=null,firstMain=true,firstSec=true;
-  rows.forEach((r,idx)=>{while(r.length<12)r.push('');
-    if(idx===0){const c=(r[11]||'').trim();if(/^https?:\/\//.test(c))cover=c;}
-    const amt=pnum(r[1]),bal=pnum(r[2]),desc=(r[3]||'').trim(),paid=(r[4]||'').trim().toUpperCase()==='TRUE';
-    if(amt!==null&&amt>0&&desc!=='Comment'){
-      const date=parseD(r[0],lastMain);lastMain=date;
-      let typ;if(firstMain){typ='income';firstMain=false;}else if(bal!==null&&prevMain!==null){typ=bal>prevMain?'income':'expense';}else typ='expense';
-      if(bal!==null)prevMain=bal;
-      txs.push({id:uid(),date,desc,amount:Math.round(amt*100)/100,type:typ,wallet:'main',comment:'',paid});
+  const signed=isIncome?Math.abs(amount):-Math.abs(amount);
+  const newBal=lastBal+signed;
+
+  if(isMain){
+    // append row cols A-D (1-indexed cols A=1)
+    // Find next empty row for main wallet
+    let nextRow=rows.length+1;
+    // check if there\'s already a row with pocket data we should share
+    // For simplicity append to next row
+    const rowVals=[dateStr, isIncome?amount:-amount, newBal, comment];
+    await sheetAppend(sheetName, rowVals);
+  } else {
+    // pocket wallet cols G-J — append as new row, but put in cols G-J only
+    // We need to find next empty G-column row
+    let nextRow=2;
+    for(let i=rows.length-1;i>=1;i--){
+      if(rows[i]&&rows[i][6]&&String(rows[i][6]).trim()!==''){nextRow=i+2;break;}
     }
-    if(isDateStr(r[6])){const samt=pnum(r[7]),sbal=pnum(r[8]),sdesc=(r[9]||'').trim();
-      if(samt!==null&&samt>0){const date=parseD(r[6],lastSec);lastSec=date;
-        let typ;if(firstSec){typ='income';firstSec=false;}else if(sbal!==null&&prevSec!==null){typ=sbal>prevSec?'income':'expense';}else typ='expense';
-        if(sbal!==null)prevSec=sbal;
-        txs.push({id:uid(),date,desc:sdesc,amount:Math.round(samt*100)/100,type:typ,wallet:'second',comment:'',paid:false});
-      }}
-  });
-  return {txs,cover};
-}
-
-/* export builders */
-function buildRows(m){
-  const main=m.transactions.filter(t=>t.wallet==='main').slice().sort((a,b)=>a.date<b.date?-1:1);
-  const sec=m.transactions.filter(t=>t.wallet==='second').slice().sort((a,b)=>a.date<b.date?-1:1);
-  let bm=0,bs=0;
-  const mr=main.map(t=>{bm+=t.type==='income'?t.amount:-t.amount;return [t.date,t.amount,Math.round(bm*100)/100,t.desc,t.paid?'TRUE':''];});
-  const sr=sec.map(t=>{bs+=t.type==='income'?t.amount:-t.amount;return [t.date,t.amount,Math.round(bs*100)/100,t.desc,t.paid?'TRUE':''];});
-  const n=Math.max(mr.length,sr.length);
-  const cover=m.coverType==='image'?m.coverValue:'';
-  const rows=[['Date','Lists','Balance','Comment','Paid','','Date','Lists','Balance','Comment','Cover(L1)',cover]];
-  for(let i=0;i<n;i++){const a=mr[i]||['','','','',''];const b=sr[i]||['','','','',''];rows.push([...a,'',...b]);}
-  return rows;
-}
-function buildTSV(m){return buildRows(m).map(r=>r.join('\t')).join('\n');}
-function buildCSV(m){return buildRows(m).map(r=>r.map(c=>{c=String(c);return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c;}).join(',')).join('\n');}
-
-/* mutations */
-async function upsertTx(tx){
-  const m=S.months[S.openId];
-  const list=m.transactions.find(t=>t.id===tx.id)?m.transactions.map(t=>t.id===tx.id?tx:t):[...m.transactions,tx];
-  if(tx.wallet)S.wallet=tx.wallet;
-  await saveMonth({...m,transactions:list});closeModal();render();
-}
-async function removeTx(id){const m=S.months[S.openId];await saveMonth({...m,transactions:m.transactions.filter(t=>t.id!==id)});closeModal();render();}
-async function setCover(type,val){const m=S.months[S.openId];await saveMonth({...m,coverType:type,coverValue:val});closeModal();render();}
-async function createMonth(y,mo,cov,carry){
-  const id=mid(y,mo);
-  if(S.months[id]){S.view='month';S.openId=id;S.dd=false;closeModal();render();return;}
-  let txs=[];
-  const cs=isoOf(new Date(y,mo-1,28));
-  if(carry&&S.order.length){
-    const last=S.months[S.order[0]];const rec=['AIS','AIS ','AIS Fiber','AIS FIBER','ค่าไฟฟ้า','ประกันสุขภาพ ','ประกันสุขภาพ','Shopeepay','Youtube Premirem'];const seen=new Set();
-    last.transactions.forEach(t=>{const d=t.desc.trim();if(t.wallet==='main'&&t.type==='expense'&&rec.includes(t.desc)&&!seen.has(d)){seen.add(d);txs.push({id:uid(),date:cs,desc:d,amount:t.amount,type:'expense',wallet:'main',comment:'ประจำเดือน',paid:false});}});
+    const {apiKey,sheetId}=getCfg();
+    const range=encodeURIComponent(`${sheetName}!G${nextRow}:J${nextRow}`);
+    const r=await fetch(
+      `${BASE}/${sheetId}/values/${range}?valueInputOption=USER_ENTERED&key=${apiKey}`,
+      {method:'PUT',headers:{'Content-Type':'application/json'},
+       body:JSON.stringify({values:[[dateStr, isIncome?amount:-amount, newBal, comment]]})}
+    );
+    if(!r.ok) throw new Error(`Write pocket error ${r.status}`);
   }
-  const m={id,year:y,month:mo,coverType:'preset',coverValue:cov,transactions:txs};
-  S.order=[id,...S.order].sort((a,b)=>a<b?1:-1);
-  await saveMonth(m);await saveMeta();
-  S.view='month';S.openId=id;S.wallet='main';S.monthView='calendar';S.dd=false;closeModal();render();
+  return {success:true};
 }
-async function deleteMonth(id){S.order=S.order.filter(x=>x!==id);delete S.months[id];await store.del('fd2:month:'+id);await saveMeta();S.view='shelf';S.openId=null;closeModal();render();}
 
-function defaultDate(){const m=S.months[S.openId];const {start,end}=cycleRange(m);const t=new Date();return (t>=start&&t<=end)?todayISO():isoOf(start);}
-function newTx(date){return {id:uid(),date:date||defaultDate(),desc:'',amount:'',type:'expense',wallet:S.wallet,comment:'',paid:false,_new:true};}
+/* =========================================================
+   UPDATE TRANSACTION
+   ========================================================= */
+async function updateTransactionAPI(month, wallet, rowIndex, dateStr, amount, comment, paid){
+  const sheetName=SHEET_NAMES[month];
+  const isMain=wallet==='main';
+  const colStart=isMain?1:7; // A=1 or G=7
+  await sheetUpdate(sheetName, rowIndex, colStart, colStart+4,
+    [dateStr, amount, '', comment, paid?'TRUE':'FALSE']);
+  return {success:true};
+}
 
-let toastT;function toast(msg){const el=document.createElement('div');el.className='toast';el.textContent=msg;document.body.appendChild(el);clearTimeout(toastT);toastT=setTimeout(()=>el.remove(),1800);}
+/* =========================================================
+   DELETE TRANSACTION
+   ========================================================= */
+async function deleteTransactionAPI(month, wallet, rowIndex){
+  const sheetName=SHEET_NAMES[month];
+  const isMain=wallet==='main';
+  const colStart=isMain?1:7;
+  await sheetClear(sheetName, rowIndex, colStart, colStart+4);
+  return {success:true};
+}
 
-/* event delegation */
-document.addEventListener('click',e=>{
-  if(e.target.classList&&e.target.classList.contains('overlay')){closeModal();return;}
-  const t=e.target.closest('[data-act]');
-  if(S.dd&&!e.target.closest('.dd')){S.dd=false;render();return;}
-  if(!t)return;
-  const a=t.dataset.act;
-  switch(a){
-    case 'open':S.view='month';S.openId=t.dataset.id;S.wallet='main';S.monthView='calendar';S.dd=false;closeModal();render();break;
-    case 'back':S.view='shelf';S.openId=null;render();break;
-    case 'dd-toggle':S.dd=!S.dd;render();break;
-    case 'switch':monthPickerModal();break;
-    case 'create':createModal();break;
-    case 'view':S.monthView=t.dataset.v;render();break;
-    case 'wallet':S.wallet=t.dataset.w;render();break;
-    case 'add':txModal(newTx());break;
-    case 'addday':txModal(newTx(t.dataset.date));break;
-    case 'edit':{const m=S.months[S.openId];txModal(m.transactions.find(x=>x.id===t.dataset.id));break;}
-    case 'toggle':{const m=S.months[S.openId];const tx=m.transactions.find(x=>x.id===t.dataset.id);upsertTx({...tx,paid:!tx.paid});break;}
-    case 'day':dayModal(t.dataset.date);break;
-    case 'cover':coverModal();break;
-    case 'setcover':setCover(t.dataset.type,t.dataset.val);break;
-    case 'sheet':sheetModal('import');break;
-    case 'deltx':removeTx(t.dataset.id);break;
-    case 'delmonth':confirmDel();break;
-    case 'closem':closeModal();break;
+/* =========================================================
+   SET COVER
+   ========================================================= */
+async function setCoverAPI(month, url){
+  const sheetName=SHEET_NAMES[month];
+  await sheetUpdate(sheetName, 1, 12, 12, [url]); // col L = 12
+  return {success:true};
+}
+
+/* =========================================================
+   APP STATE & UI
+   ========================================================= */
+const MTH=['','มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const MTH_S=['','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+
+let curMonth=new Date().getMonth()+1, curWallet='main', curView='cal';
+let wallet1=[], wallet2=[], editRow=null, txType='expense', modalWallet='main', coverPos='center';
+
+const THEME_CLASS={'mint':'','blue':'th-blue','orange':'th-orange','rose':'th-rose','purple':'th-purple','yellow':'th-yellow','sky':'th-sky','slate':'th-slate','red':'th-red'};
+function setTheme(t){
+  document.body.className=THEME_CLASS[t]||'';
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
+  const el=document.querySelector('.tb-'+t);if(el)el.classList.add('active');
+  localStorage.setItem('pt',t);
+}
+const st=localStorage.getItem('pt');if(st)setTheme(st);
+
+function pad(n){return String(n).padStart(2,'0');}
+function fmtB(n){
+  if(isNaN(n)||n===undefined)return'—';
+  return'฿'+Math.abs(n).toLocaleString('th-TH',{minimumFractionDigits:0,maximumFractionDigits:0});
+}
+function todayStr(){const n=new Date();return pad(n.getDate())+'/'+pad(n.getMonth()+1)+'/'+String(n.getFullYear()).slice(-2);}
+function changeMonth(d){curMonth=((curMonth-1+d+12)%12)+1;loadMonth();}
+
+/* ---- LOAD ---- */
+async function loadMonth(){
+  document.getElementById('navLabel').textContent=MTH[curMonth]+' 2026';
+  document.getElementById('coverMonthName').textContent=MTH[curMonth];
+  ['sBalance','sIncome','sExpense'].forEach(id=>document.getElementById(id).textContent='...');
+  setGridLoading();
+  try{
+    const data=await getMonthData(curMonth);
+    wallet1=data.wallet1; wallet2=data.wallet2;
+    const img=document.getElementById('coverImg');
+    if(data.coverUrl){img.src=data.coverUrl;img.style.display='block';}
+    else img.style.display='none';
+    updateSummary();renderCalendar();renderList();
+  }catch(e){
+    showToast('❌ '+e.message);
+    console.error(e);
   }
-});
-function confirmDel(){
-  const m=S.months[S.openId];
-  openModal(`<div class="modal pop center" style="max-width:340px">
-    <h3 style="margin-bottom:8px">ลบสมุดเดือนนี้?</h3>
-    <p class="muted" style="font-size:.88rem;margin-bottom:18px">${TM[m.month]} ${m.year+543} จะถูกลบถาวร</p>
-    <div style="display:flex;gap:8px"><button style="flex:1;border-radius:12px;padding:13px;background:var(--paper)" data-act="closem">ยกเลิก</button>
-    <button id="del-go" style="flex:1;border-radius:12px;padding:13px;background:var(--red);color:#fff">ลบ</button></div></div>`);
-  document.getElementById('del-go').onclick=()=>deleteMonth(m.id);
+}
+function setGridLoading(){
+  if(curView==='cal') document.getElementById('calGrid').innerHTML='<div class="loading" style="grid-column:span 7"><div class="sp"></div>กำลังโหลด...</div>';
+  else document.getElementById('listContent').innerHTML='<div class="loading"><div class="sp"></div>กำลังโหลด...</div>';
 }
 
-boot();
+function switchWallet(w){
+  curWallet=w;
+  document.getElementById('wt1').classList.toggle('active',w==='main');
+  document.getElementById('wt2').classList.toggle('active',w==='pocket');
+  updateSummary();renderCalendar();renderList();
+}
+function activeRows(){return curWallet==='main'?wallet1:wallet2;}
+function updateSummary(){
+  const rows=activeRows();let inc=0,exp=0,bal=0;
+  rows.forEach(r=>{if(r.amount>0)inc+=r.amount;else exp+=Math.abs(r.amount);});
+  if(rows.length)bal=rows[rows.length-1].balance;
+  document.getElementById('sBalance').textContent=fmtB(bal);
+  document.getElementById('sIncome').textContent=fmtB(inc);
+  document.getElementById('sExpense').textContent=fmtB(exp);
+  document.getElementById('sBalanceLabel').textContent=curWallet==='main'?'คงเหลือใบหลัก':'คงเหลือใบรอง';
+}
+function switchView(v){
+  curView=v;
+  document.getElementById('calView').style.display=v==='cal'?'block':'none';
+  document.getElementById('listView').style.display=v==='list'?'block':'none';
+  document.querySelectorAll('.vtab').forEach((t,i)=>
+    t.classList.toggle('active',(i===0&&v==='cal')||(i===1&&v==='list')));
+}
+
+/* ---- CALENDAR ---- */
+function renderCalendar(){
+  const grid=document.getElementById('calGrid');grid.innerHTML='';
+  const prevM=curMonth===1?12:curMonth-1,prevY=curMonth===1?2025:2026;
+  const cs=new Date(prevY,prevM-1,28);
+  const ce=new Date(cs);ce.setDate(cs.getDate()+27);
+  const cl=document.getElementById('cycleLabel');
+  if(cl){const f=d=>d.getDate()+' '+MTH_S[d.getMonth()+1]+' '+(d.getFullYear()+543);
+    cl.textContent='รอบ '+f(cs)+' — '+f(ce);}
+  const byDate={};[...wallet1,...wallet2].forEach(r=>{
+    if(!byDate[r.date])byDate[r.date]=[];byDate[r.date].push(r);});
+  const today=todayStr(),startDow=cs.getDay();
+  for(let i=0;i<startDow;i++){const e=document.createElement('div');e.className='cc empty';grid.appendChild(e);}
+  for(let d=0;d<28;d++){
+    const date=new Date(cs);date.setDate(cs.getDate()+d);
+    const ds=pad(date.getDate())+'/'+pad(date.getMonth()+1)+'/'+String(date.getFullYear()).slice(-2);
+    const cell=document.createElement('div');cell.className='cc';
+    if(ds===today)cell.classList.add('today');
+    const numEl=document.createElement('div');numEl.className='cc-num';
+    if(ds===today){const c=document.createElement('div');c.className='today-circle';c.textContent=date.getDate();numEl.appendChild(c);}
+    else numEl.textContent=date.getDate();
+    cell.appendChild(numEl);
+    const txs=byDate[ds]||[];
+    const dots=document.createElement('div');dots.className='cc-dots';
+    txs.slice(0,2).forEach(tx=>{
+      const dot=document.createElement('div');
+      dot.className='cdot '+(tx.wallet==='pocket'?'p2':(tx.amount>0?'inc':'exp'));
+      dot.textContent=(tx.amount>0?'+':'')+fmtB(tx.amount);dots.appendChild(dot);
+    });
+    if(txs.length>2){const m=document.createElement('div');m.className='cdot inc';m.textContent='+'+(txs.length-2)+' อื่นๆ';dots.appendChild(m);}
+    cell.appendChild(dots);cell.onclick=()=>openDayDetail(ds,txs);grid.appendChild(cell);
+  }
+}
+
+/* ---- LIST ---- */
+function renderList(){
+  const cont=document.getElementById('listContent');const rows=activeRows();
+  if(!rows.length){cont.innerHTML='<div style="text-align:center;padding:56px;color:var(--ts);font-size:17px;">ยังไม่มีรายการ</div>';return;}
+  const grouped={};
+  rows.forEach(r=>{if(!grouped[r.date])grouped[r.date]=[];grouped[r.date].push(r);});
+  cont.innerHTML=Object.keys(grouped).sort().reverse().map(date=>`
+    <div class="ldg">
+      <div class="ldh">${fmtDTH(date)}</div>
+      ${grouped[date].map(r=>`
+        <div class="li" onclick='openEditModal(${JSON.stringify(r)})'>
+          <div class="li-left">
+            <div class="li-comment">${r.comment||'(ไม่มีรายละเอียด)'}</div>
+            <div class="li-sub">คงเหลือ ${fmtB(r.balance)}</div>
+            ${r.paid?'<div class="li-badges"><span class="badge">✓ ชำระแล้ว</span></div>':''}</div>
+          <div class="li-amount ${r.amount>0?'inc':'exp'}">${r.amount>0?'+':''}${fmtB(r.amount)}</div>
+        </div>`).join('')}
+    </div>`).join('');
+}
+function fmtDTH(ds){const p=ds.split('/');if(p.length!==3)return ds;return parseInt(p[0])+' '+MTH_S[parseInt(p[1])]+' '+(parseInt(p[2])+2500);}
+function openDayDetail(ds,txs){if(!txs.length){openAddModal(ds);return;}openEditModal(txs[0]);}
+
+/* ---- MODAL ---- */
+function openAddModal(prefill){
+  editRow=null;
+  document.getElementById('mtitle').textContent='เพิ่มรายการ';
+  document.getElementById('mDelBtn').style.display='none';
+  document.getElementById('paidWrap').style.display='none';
+  document.getElementById('wselWrap').style.display='block';
+  document.getElementById('txDate').value=prefill||todayStr();
+  document.getElementById('txAmount').value='';
+  document.getElementById('txComment').value='';
+  setModalWallet(curWallet);setType('expense');
+  document.getElementById('txModal').classList.add('open');
+}
+function openEditModal(r){
+  editRow=r;
+  document.getElementById('mtitle').textContent='แก้ไขรายการ';
+  document.getElementById('mDelBtn').style.display='block';
+  document.getElementById('paidWrap').style.display='flex';
+  document.getElementById('wselWrap').style.display='none';
+  document.getElementById('txDate').value=r.date;
+  document.getElementById('txAmount').value=Math.abs(r.amount);
+  document.getElementById('txComment').value=r.comment;
+  document.getElementById('txPaid').checked=r.paid;
+  setType(r.amount>=0?'income':'expense');
+  document.getElementById('txModal').classList.add('open');
+}
+function closeTxModal(){document.getElementById('txModal').classList.remove('open');}
+function closeBg(e,id,fn){if(e.target.id===id)fn();}
+function setType(t){txType=t;document.getElementById('btnInc').classList.toggle('active',t==='income');document.getElementById('btnExp').classList.toggle('active',t==='expense');}
+function setModalWallet(w){modalWallet=w;document.getElementById('wsMain').classList.toggle('active',w==='main');document.getElementById('wsPocket').classList.toggle('active',w==='pocket');}
+
+/* ---- SAVE ---- */
+async function saveTx(){
+  const date=document.getElementById('txDate').value.trim();
+  const amount=parseFloat(document.getElementById('txAmount').value);
+  const comment=document.getElementById('txComment').value.trim();
+  if(!date||isNaN(amount)||amount<=0){showToast('กรอกข้อมูลให้ครบด้วยนะ');return;}
+  const btn=document.getElementById('mSaveBtn');btn.textContent='กำลังบันทึก...';btn.disabled=true;
+  try{
+    if(editRow){
+      const paid=document.getElementById('txPaid').checked;
+      const signed=txType==='income'?amount:-amount;
+      await updateTransactionAPI(curMonth,editRow.wallet,editRow.row,date,signed,comment,paid);
+    }else{
+      await addTransactionAPI(curMonth,modalWallet,date,amount,comment,txType==='income');
+    }
+    btn.textContent='บันทึก';btn.disabled=false;
+    closeTxModal();showToast('✅ บันทึกเรียบร้อย!');loadMonth();
+  }catch(e){
+    btn.textContent='บันทึก';btn.disabled=false;
+    showToast('❌ '+e.message);
+  }
+}
+async function deleteTx(){
+  if(!editRow||!confirm('ลบรายการนี้?'))return;
+  try{
+    await deleteTransactionAPI(curMonth,editRow.wallet,editRow.row);
+    closeTxModal();showToast('✅ ลบแล้ว');loadMonth();
+  }catch(e){showToast('❌ '+e.message);}
+}
+
+/* ---- COVER ---- */
+function setPos(p){
+  coverPos=p;
+  document.querySelectorAll('.pbtn').forEach(b=>b.classList.remove('active'));
+  const map={'top':'pos-top','center':'pos-center','bottom':'pos-bottom','top left':'pos-top-left','top right':'pos-top-right'};
+  const el=document.getElementById(map[p]);if(el)el.classList.add('active');
+  document.getElementById('coverImg').style.objectPosition=p;
+}
+function openCoverModal(){
+  document.getElementById('coverUrlInput').value='';
+  setPos(coverPos);
+  document.getElementById('coverModal').classList.add('open');
+}
+async function saveCover(){
+  const url=document.getElementById('coverUrlInput').value.trim();
+  document.getElementById('coverModal').classList.remove('open');
+  const img=document.getElementById('coverImg');
+  if(url){img.src=url;img.style.display='block';}
+  img.style.objectPosition=coverPos;
+  if(url){
+    try{await setCoverAPI(curMonth,url);showToast('✅ บันทึกภาพปกแล้ว');}
+    catch(e){showToast('❌ '+e.message);}
+  } else showToast('✅ ตั้งค่า crop แล้ว');
+}
+
+/* ---- TOAST ---- */
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+
+/* ---- INIT ---- */
+window.onload=()=>{
+  const {apiKey}=getCfg();
+  if(!apiKey){
+    document.getElementById('cfgModal').classList.add('open');
+  } else {
+    loadMonth();
+  }
+};
 </script>
 </body>
 </html>
